@@ -8,23 +8,31 @@
    seller (marigold) / buyer (rose) accents switch without re-rendering.
    ------------------------------------------------------------------------- */
 :root {
-  --bg: #fff4e0;
+  /* paper & ink — warm ivory, deep indigo-black */
+  --bg: #faf4ea;
+  --bg-deep: #f3e9db;
   --card: #ffffff;
-  --fg: #1e1b4b;
-  --muted: #57526e;
-  --line: #e8d7bb;
-  --s50: #fff7ed;
-  --s100: #fdecd3;
-  --s200: #f9d4a3;
-  --s700: #a65a0b;
-  --s800: #7f430a;
-  --skeleton: #f3e9dc;
+  --fg: #15122e;
+  --muted: #5b5676;
+  --line: #e7dcc9;
+  --hairline: rgb(21 18 46 / 0.09);
+  --s50: #fdf7ee;
+  --s100: #fbeeda;
+  --s200: #f6d7a8;
+  --s700: #a2590d;
+  --s800: #7a400a;
+  --skeleton: #f1e7da;
+  /* brass / gold — the "high class" metal used for hairlines, rules and foil text */
+  --gold: #c08a2e;
+  --gold-light: #e9c877;
+  --gold-soft: #f3e3c0;
+  --gold-deep: #8c5f16;
   /* role accent — seller defaults */
   --accent: #e8871e;
   --accent-dark: #b8650f;
-  --accent-soft: #fdecd3;
-  --accent-strong: #a65a0b;
-  --on-accent: #1e1b4b;
+  --accent-soft: #fbeeda;
+  --accent-strong: #a2590d;
+  --on-accent: #15122e;
   --accent-glow: rgb(232 135 30 / 0.35);
   color-scheme: light;
 }
@@ -37,18 +45,24 @@
   --accent-glow: rgb(225 29 72 / 0.3);
 }
 .dark {
-  --bg: #0f0e1f;
-  --card: #1a1833;
-  --fg: #f5f3ff;
-  --muted: #a5a3c4;
-  --line: #2e2b4f;
-  --s50: #231d24;
-  --s100: #3a2a1f;
-  --s200: #5c3d1f;
+  --bg: #0b0a18;
+  --bg-deep: #07060f;
+  --card: #15132b;
+  --fg: #f4f2ff;
+  --muted: #a7a3c8;
+  --line: #2a2748;
+  --hairline: rgb(255 255 255 / 0.1);
+  --s50: #1d1a2e;
+  --s100: #332414;
+  --s200: #55381c;
   --s700: #f4b66a;
   --s800: #f9d4a3;
-  --skeleton: #24223f;
-  --accent-soft: #3a2a1f;
+  --skeleton: #1e1b38;
+  --gold: #d9ab57;
+  --gold-light: #f0d08a;
+  --gold-soft: #332a18;
+  --gold-deep: #e9c877;
+  --accent-soft: #332414;
   --accent-strong: #f4b66a;
   color-scheme: dark;
 }
@@ -60,7 +74,13 @@
 
 @theme inline {
   --color-cream: var(--bg);
+  --color-cream-deep: var(--bg-deep);
   --color-paper: var(--card);
+  --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --color-gold-soft: var(--gold-soft);
+  --color-gold-deep: var(--gold-deep);
+  --color-hairline: var(--hairline);
   --color-ink: var(--fg);
   --color-ink-soft: var(--muted);
   --color-line: var(--line);
@@ -104,14 +124,27 @@
 }
 
 @theme {
-  /* "Rangoli Grid": chunky radii, 2px ink outlines (as a ring, so no layout shift), hard offset shadows */
-  --radius-card: 24px;
-  --radius-btn: 18px;
-  --shadow-soft: 0 0 0 2px var(--fg);
-  --shadow-warm: 0 0 0 2px var(--fg), 6px 6px 0 0 var(--fg);
-  --shadow-lift: 4px 4px 0 0 var(--fg);
+  /* "Rangoli Grid · Atelier": generous radii, hairline edges, layered soft elevation.
+     The hard offset stamp survives only where it is a deliberate graphic accent. */
+  --radius-card: 22px;
+  --radius-btn: 16px;
+  --radius-lux: 28px;
+
+  /* elevation scale — layered, low-opacity, never muddy */
+  --shadow-e1: 0 1px 2px rgb(21 18 46 / 0.05), 0 2px 8px -2px rgb(21 18 46 / 0.07);
+  --shadow-e2: 0 1px 2px rgb(21 18 46 / 0.05), 0 10px 24px -8px rgb(21 18 46 / 0.16);
+  --shadow-e3: 0 2px 4px rgb(21 18 46 / 0.06), 0 24px 56px -18px rgb(21 18 46 / 0.3);
+
+  /* legacy names, re-tuned: every existing card inherits the premium elevation */
+  --shadow-soft: 0 0 0 1px var(--hairline), 0 1px 2px rgb(21 18 46 / 0.04), 0 8px 20px -12px rgb(21 18 46 / 0.22);
+  --shadow-warm: 0 0 0 1px var(--hairline), 0 2px 4px rgb(21 18 46 / 0.05), 0 18px 40px -16px rgb(21 18 46 / 0.32);
+  --shadow-lift: 0 1px 2px rgb(21 18 46 / 0.08), 0 12px 26px -10px rgb(21 18 46 / 0.4);
+  --shadow-stamp: 0 0 0 1.5px var(--fg), 5px 5px 0 0 var(--fg);
+  --shadow-gold: 0 0 0 1px color-mix(in oklab, var(--gold) 55%, transparent), 0 14px 32px -14px color-mix(in oklab, var(--gold) 60%, transparent);
+
   --font-sans: "Rupee", var(--font-brico), "Noto Sans Telugu", "Noto Sans Devanagari", "Nirmala UI", "Kohinoor Telugu", "Kohinoor Devanagari", system-ui, sans-serif;
-  --font-display: "Rupee", var(--font-brico), "Noto Sans Telugu", "Noto Sans Devanagari", "Nirmala UI", system-ui, sans-serif;
+  --font-display: "Rupee", var(--font-fraunces), var(--font-brico), "Noto Sans Telugu", "Noto Sans Devanagari", "Nirmala UI", system-ui, serif;
+  --font-ui: "Rupee", var(--font-brico), system-ui, sans-serif;
 }
 
 html {
@@ -125,6 +158,12 @@ html {
 html,
 body {
   overflow-x: clip;
+}
+
+.dark {
+  --shadow-soft: 0 0 0 1px var(--hairline), 0 1px 2px rgb(0 0 0 / 0.4), 0 10px 24px -14px rgb(0 0 0 / 0.7);
+  --shadow-warm: 0 0 0 1px var(--hairline), 0 2px 6px rgb(0 0 0 / 0.45), 0 22px 48px -18px rgb(0 0 0 / 0.8);
+  --shadow-lift: 0 2px 4px rgb(0 0 0 / 0.5), 0 14px 30px -12px rgb(0 0 0 / 0.8);
 }
 
 body {
@@ -141,8 +180,23 @@ h2,
 h3,
 .font-display {
   font-family: var(--font-display);
-  font-weight: 800;
-  letter-spacing: -0.025em;
+  font-weight: 650;
+  font-variation-settings: "SOFT" 20, "WONK" 0;
+  letter-spacing: -0.015em;
+}
+h1,
+.font-display {
+  text-wrap: balance;
+}
+/* UI chrome (nav, buttons, labels) stays on the grotesque — serif is for voice, not controls */
+.font-ui,
+button,
+input,
+select,
+textarea,
+label,
+nav {
+  font-family: var(--font-ui);
 }
 /* Telugu / Devanagari: vowel signs sit above and below the letters, so the tight
    Latin line-height and negative tracking would make lines collide. (Unlayered, so
@@ -432,27 +486,259 @@ input[type="search"]::-webkit-search-cancel-button {
   }
 }
 
-/* ------------------------------------------------------------ Rangoli Grid */
+/* ============================================================ Rangoli Grid · Atelier
+   The graphic layer: paper texture, woven patterns, jaali lattice, gold foil,
+   glass chrome and the colour-block tiles. All decoration is pure CSS/SVG —
+   no extra image requests, and every piece has a dark-mode answer.
+   ================================================================================ */
 :root {
   --tile-marigold: #e8871e;
   --tile-indigo: #1e1b4b;
   --tile-teal: #0f766e;
   --tile-butter: #fde68a;
   --tile-rose: #be123c;
+  --tile-plum: #4c1d95;
+}
+
+/* ---------------------------------------------------------------- 1. textures */
+
+/* fine paper grain — a tiled SVG turbulence, ~1 KB, sits over flat colour so large
+   surfaces stop looking like plastic */
+.bg-grain::before,
+.grain-layer {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.4;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+}
+.bg-grain {
+  position: relative;
+  isolation: isolate;
+}
+.dark .bg-grain::before,
+.dark .grain-layer {
+  mix-blend-mode: overlay;
+  opacity: 0.22;
+}
+
+/* the whole page gets the faintest warm tooth */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* jaali: the pierced-screen lattice of a haveli window, drawn with two gradients */
+.bg-jaali {
+  background-image:
+    repeating-linear-gradient(45deg, currentColor 0 1px, transparent 1px 22px),
+    repeating-linear-gradient(-45deg, currentColor 0 1px, transparent 1px 22px);
+  opacity: 0.14;
+}
+
+/* handloom weave — fine warp and weft */
+.bg-weave {
+  background-image:
+    repeating-linear-gradient(0deg, currentColor 0 1px, transparent 1px 6px),
+    repeating-linear-gradient(90deg, currentColor 0 1px, transparent 1px 6px);
+  opacity: 0.1;
+}
+
+/* rangoli dot grid (kolam) */
+.bg-kolam {
+  background-image: radial-gradient(currentColor 1.5px, transparent 1.6px);
+  background-size: 18px 18px;
+  opacity: 0.18;
+}
+
+/* soft aurora mesh for hero panels */
+.bg-mesh {
+  background-image:
+    radial-gradient(42% 55% at 12% 18%, color-mix(in oklab, var(--accent) 45%, transparent) 0%, transparent 70%),
+    radial-gradient(38% 48% at 88% 12%, color-mix(in oklab, var(--tile-rose) 50%, transparent) 0%, transparent 72%),
+    radial-gradient(52% 60% at 72% 92%, color-mix(in oklab, var(--tile-plum) 55%, transparent) 0%, transparent 70%);
+}
+
+/* ---------------------------------------------------------------- 2. gold */
+
+/* foil wordmark / numerals — a brushed metal gradient, legible in both themes */
+.text-foil {
+  background-image: linear-gradient(100deg, var(--gold-deep) 0%, var(--gold-light) 28%, #fff7e2 46%, var(--gold) 64%, var(--gold-deep) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.dark .text-foil {
+  background-image: linear-gradient(100deg, var(--gold) 0%, var(--gold-light) 30%, #fffaf0 50%, var(--gold-light) 70%, var(--gold) 100%);
+}
+
+/* hairline edges — the single thin rule that does the work two black pixels used to */
+.edge {
+  border: 1px solid var(--hairline);
+}
+.edge-strong {
+  border: 1.5px solid color-mix(in oklab, var(--fg) 24%, transparent);
+}
+.edge-gold {
+  border: 1px solid color-mix(in oklab, var(--gold) 42%, transparent);
+}
+/* a gold rule that fades at both ends — our section divider */
+.rule-gold {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--gold) 70%, transparent) 20%, color-mix(in oklab, var(--gold) 70%, transparent) 80%, transparent);
+}
+
+/* ---------------------------------------------------------------- 3. surfaces */
+
+/* the premium card: paper, hairline, layered lift, and a 1px inner highlight on top */
+.card-lux {
+  position: relative;
+  border-radius: var(--radius-lux);
+  background: var(--card);
+  box-shadow:
+    0 0 0 1px var(--hairline),
+    inset 0 1px 0 0 rgb(255 255 255 / 0.7),
+    var(--shadow-e2);
+}
+.dark .card-lux {
+  box-shadow:
+    0 0 0 1px var(--hairline),
+    inset 0 1px 0 0 rgb(255 255 255 / 0.06),
+    var(--shadow-e2);
+}
+
+/* Frosted chrome for sticky headers and bars.
+   A backdrop blur is the most expensive thing on this page: it re-filters
+   everything behind the bar on every scrolled frame. Phones get an opaque bar
+   instead (measured: ~25% less compositing work per frame, and nothing is lost
+   visually at that width), and so does anyone who asks for reduced transparency.
+   The blur switches on from the tablet breakpoint up. */
+.glass {
+  background: var(--bg);
+}
+.glass-paper {
+  background: var(--card);
+}
+@media (min-width: 768px) {
+  @supports (backdrop-filter: blur(1px)) {
+    .glass {
+      background: color-mix(in oklab, var(--bg) 78%, transparent);
+      backdrop-filter: blur(18px) saturate(1.6);
+    }
+    .glass-paper {
+      background: color-mix(in oklab, var(--card) 82%, transparent);
+      backdrop-filter: blur(18px) saturate(1.6);
+    }
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .glass {
+    background: var(--bg);
+    backdrop-filter: none;
+  }
+  .glass-paper {
+    background: var(--card);
+    backdrop-filter: none;
+  }
+}
+
+/* the desktop marketplace navbar: paper chrome, frosted where it is affordable.
+   (A `lg:` prefix cannot be used on a hand-written class — Tailwind only builds
+   variants for its own utilities — so the breakpoint lives here.) */
+@media (min-width: 1024px) {
+  .chrome-buyer {
+    background: var(--card);
+    box-shadow: 0 1px 0 0 var(--hairline), 0 8px 24px -20px rgb(21 18 46 / 0.5);
+  }
+  @supports (backdrop-filter: blur(1px)) {
+    .chrome-buyer {
+      background: color-mix(in oklab, var(--card) 82%, transparent);
+      backdrop-filter: blur(18px) saturate(1.6);
+    }
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .chrome-buyer {
+    background: var(--card);
+    backdrop-filter: none;
+  }
+}
+
+/* bottom hairline instead of a 2px ink slab */
+.chrome-edge {
+  box-shadow: 0 1px 0 0 var(--hairline), 0 8px 24px -20px rgb(21 18 46 / 0.5);
+}
+
+/* deep indigo "night" panel used by hero / brand surfaces */
+.panel-night {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 130% at 85% -10%, #3b2a66 0%, transparent 55%),
+    radial-gradient(90% 120% at 0% 110%, #5a1733 0%, transparent 60%),
+    linear-gradient(160deg, #1b1740 0%, #130f2c 55%, #0d0a1f 100%);
+  color: #fdf7ee;
+}
+
+/* ---------------------------------------------------------------- 4. motion */
+
+/* a slow specular sweep across hero panels and foil buttons */
+@keyframes sheen {
+  0% {
+    transform: translateX(-120%) skewX(-18deg);
+  }
+  100% {
+    transform: translateX(260%) skewX(-18deg);
+  }
+}
+.sheen {
+  position: relative;
+  overflow: hidden;
+}
+.sheen::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 28%;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.22), transparent);
+  animation: sheen 6.5s ease-in-out 1.2s infinite;
+}
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(1.5deg);
+  }
+}
+.float-slow {
+  animation: float-slow 7s ease-in-out infinite;
 }
 @keyframes pop-in {
   from {
     opacity: 0;
-    transform: scale(0.9);
+    transform: scale(0.94) translateY(8px);
   }
 }
 @keyframes tick {
   0%,
   100% {
-    transform: rotate(-6deg);
+    transform: rotate(-4deg);
   }
   50% {
-    transform: rotate(3deg);
+    transform: rotate(2deg);
   }
 }
 @keyframes spin-slow {
@@ -461,42 +747,117 @@ input[type="search"]::-webkit-search-cancel-button {
   }
 }
 .anim-pop-in {
-  animation: pop-in 0.5s cubic-bezier(0.3, 1.4, 0.5, 1) both;
-}
-/* sticker price tags wiggle gently */
-.sticker {
-  display: inline-block;
-  border: 2px solid var(--fg);
-  border-radius: 10px;
-  background: var(--tile-marigold);
-  color: #1e1b4b;
-  font-weight: 800;
-  transform: rotate(-6deg);
-}
-.sticker-tick {
-  animation: tick 2.8s ease-in-out 1s infinite;
+  animation: pop-in 0.6s cubic-bezier(0.2, 0.9, 0.25, 1) both;
 }
 .spin-slow {
-  animation: spin-slow 24s linear infinite;
+  animation: spin-slow 42s linear infinite;
 }
-/* chunky hover: tiles lift and tilt a little (mouse only — Tailwind's hover is hover-capable devices) */
+
+/* ---------------------------------------------------------------- 5. price tag */
+
+/* the sticker is now a gold foil tag: thin metal rule, brushed face, soft drop */
+.sticker {
+  display: inline-block;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #fff3d4 0%, var(--gold-light) 40%, var(--gold) 100%);
+  color: #2b1d05;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--gold-deep) 45%, transparent), 0 6px 14px -6px rgb(21 18 46 / 0.45);
+  transform: rotate(-3deg);
+}
+.sticker-tick {
+  animation: tick 3.2s ease-in-out 1s infinite;
+}
+
+/* ---------------------------------------------------------------- 6. tiles */
+
 @media (hover: hover) {
   .tile-hover {
-    transition: transform 0.25s cubic-bezier(0.3, 1.4, 0.5, 1);
+    transition:
+      transform 0.35s cubic-bezier(0.2, 0.9, 0.25, 1),
+      box-shadow 0.35s ease;
   }
   .tile-hover:hover {
-    transform: translateY(-3px) rotate(-1deg);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-e3);
   }
   .group:hover .sticker-hover {
-    animation: tick 2.8s ease-in-out infinite;
+    animation: tick 3.2s ease-in-out infinite;
   }
 }
-/* category tiles (light text on the dark tiles, ink text on the bright ones) */
-.tile-sarees { background: var(--tile-marigold); color: #1e1b4b; }
-.tile-kurtas { background: var(--tile-indigo); color: #fff4e0; }
-.tile-men { background: var(--card); color: var(--fg); }
-.tile-kids { background: var(--tile-butter); color: #1e1b4b; }
-.tile-lehengas { background: var(--tile-teal); color: #fff; }
-.tile-jewellery { background: var(--tile-rose); color: #fff; }
-.bg-butter-tile { background: #fff3c4; }
-.dark .bg-butter-tile { background: var(--card); }
+
+/* category tiles: each a two-stop gradient with a darker foot, so text always holds */
+.tile {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.tile-sarees {
+  background: linear-gradient(150deg, #f2a243 0%, #e8871e 48%, #c06a10 100%);
+  color: #2a1a05;
+}
+.tile-kurtas {
+  background: linear-gradient(150deg, #332b6b 0%, #1e1b4b 52%, #130f2e 100%);
+  color: #fdf1dc;
+}
+.tile-men {
+  background: linear-gradient(150deg, #ffffff 0%, #f7efe2 100%);
+  color: #15122e;
+}
+.tile-kids {
+  background: linear-gradient(150deg, #ffeeb0 0%, #fbd96b 55%, #e7bc3f 100%);
+  color: #2a1f05;
+}
+.tile-lehengas {
+  background: linear-gradient(150deg, #15867c 0%, #0f766e 50%, #084f49 100%);
+  color: #ecfdf8;
+}
+.tile-jewellery {
+  background: linear-gradient(150deg, #d42a52 0%, #be123c 50%, #87082a 100%);
+  color: #fff1f3;
+}
+.dark .tile-men {
+  background: linear-gradient(150deg, #1d1a38 0%, #15132b 100%);
+  color: var(--fg);
+}
+.dark .tile-kids {
+  background: linear-gradient(150deg, #5b4a14 0%, #3e3210 100%);
+  color: #ffeeb0;
+}
+
+/* every tile carries a faint woven texture + a top sheen, added once, here */
+.tile::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    repeating-linear-gradient(45deg, currentColor 0 1px, transparent 1px 18px),
+    repeating-linear-gradient(-45deg, currentColor 0 1px, transparent 1px 18px);
+  opacity: 0.07;
+}
+.tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.2), transparent 45%);
+}
+
+.bg-butter-tile {
+  background: linear-gradient(150deg, #fff6d8 0%, #ffeeb4 100%);
+}
+.dark .bg-butter-tile {
+  background: linear-gradient(150deg, #1d1a38 0%, #15132b 100%);
+}
+
+/* ---------------------------------------------------------------- 7. shapes */
+
+/* Mughal arch — frames photos on brand surfaces */
+.arch {
+  border-radius: 50% 50% 14px 14px / 34% 34% 4% 4%;
+}
+.arch-soft {
+  border-radius: 46% 46% 20px 20px / 26% 26% 5% 5%;
+}

@@ -162,7 +162,7 @@ export default function LookPage() {
       <Sheet open={listening} onOpenChange={(o) => !o && stopRef.current()} title={t("listening")}>
         <div className="flex flex-col items-center gap-4 pb-8">
           <motion.span
-            className="flex size-28 items-center justify-center rounded-full bg-saffron-500"
+            className="flex size-28 items-center justify-center rounded-full bg-[linear-gradient(135deg,#fff3d4,#e9c877_45%,#c08a2e)] shadow-[0_0_0_1px_color-mix(in_oklab,var(--gold-deep)_45%,transparent),0_18px_36px_-14px_rgb(21_18_46/0.55)]"
             animate={{ scale: [1, 1.12, 1] }}
             transition={{ repeat: Infinity, duration: 1.2 }}
           >

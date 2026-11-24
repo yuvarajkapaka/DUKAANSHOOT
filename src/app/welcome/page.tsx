@@ -8,6 +8,7 @@ import { useState, useTransition } from "react";
 import { LogoDraw } from "@/components/brand/logo-draw";
 import { setLocaleCookie } from "@/components/language-switcher";
 import { AuthFrame } from "@/components/brand/auth-frame";
+import { GoldRule } from "@/components/brand/ornaments";
 import { Button } from "@/components/ui/button";
 import { LOCALE_LABELS, LOCALES, type Locale } from "@/i18n/config";
 import { cn } from "@/lib/utils";
@@ -19,8 +20,8 @@ function IntroArt({ n }: { n: number }) {
   if (n === 0)
     return (
       <div className="relative mx-auto h-56 w-48">
-        <Image src="/samples/garments/saree-red-silk.jpg" alt="" fill className="rounded-3xl object-cover shadow-xl" sizes="192px" priority />
-        <motion.span className="absolute -right-4 -bottom-4 flex size-16 items-center justify-center rounded-full bg-paper text-3xl shadow-xl" animate={{ scale: [1, 1.12, 1] }} transition={{ repeat: Infinity, duration: 1.6 }}>
+        <Image src="/samples/garments/saree-red-silk.jpg" alt="" fill className="arch-soft object-cover shadow-[0_0_0_1px_color-mix(in_oklab,var(--gold)_50%,transparent),0_26px_50px_-20px_rgb(21_18_46/0.55)]" sizes="192px" priority />
+        <motion.span className="edge-gold absolute -right-4 -bottom-4 flex size-16 items-center justify-center rounded-full bg-paper text-3xl shadow-[0_14px_30px_-12px_rgb(21_18_46/0.5)]" animate={{ scale: [1, 1.12, 1] }} transition={{ repeat: Infinity, duration: 1.6 }}>
           📷
         </motion.span>
       </div>
@@ -28,19 +29,19 @@ function IntroArt({ n }: { n: number }) {
   if (n === 1)
     return (
       <div className="relative mx-auto h-56 w-60">
-        <Image src="/samples/garments/saree-red-silk.jpg" alt="" width={96} height={120} className="absolute top-10 left-0 rounded-2xl object-cover shadow-lg" />
+        <Image src="/samples/garments/saree-red-silk.jpg" alt="" width={96} height={120} className="arch-soft absolute top-10 left-0 object-cover shadow-[0_0_0_1px_var(--hairline),0_16px_32px_-16px_rgb(21_18_46/0.5)]" />
         <motion.span className="absolute top-20 left-[88px] text-3xl" animate={{ x: [0, 10, 0] }} transition={{ repeat: Infinity, duration: 1.2 }}>
           ✨
         </motion.span>
-        <Image src="/samples/results/saree-red-silk-1.jpg" alt="" width={140} height={175} className="absolute top-0 right-0 rounded-3xl border-4 border-white object-cover shadow-xl" priority />
+        <Image src="/samples/results/saree-red-silk-1.jpg" alt="" width={140} height={175} className="arch-soft absolute top-0 right-0 object-cover shadow-[0_0_0_2px_var(--card),0_0_0_3px_color-mix(in_oklab,var(--gold)_55%,transparent),0_26px_50px_-18px_rgb(21_18_46/0.55)]" priority />
       </div>
     );
   return (
     <div className="relative mx-auto h-56 w-56">
-      <div className="absolute inset-x-6 top-0 bottom-0 rounded-[32px] border-[6px] border-night bg-paper p-2 shadow-xl">
+      <div className="panel-night absolute inset-x-6 top-0 bottom-0 rounded-[32px] p-2.5 shadow-[0_0_0_1px_color-mix(in_oklab,var(--gold)_45%,transparent),0_26px_50px_-18px_rgb(21_18_46/0.55)]">
         <div className="grid grid-cols-2 gap-1.5">
           {["p-red-kanjivaram-1", "p-pink-kurti-2", "p-kids-yellow-frock-1", "p-cream-kurta-1"].map((s) => (
-            <Image key={s} src={`/samples/market/${s}.jpg`} alt="" width={70} height={88} className="aspect-[4/5] w-full rounded-lg object-cover" />
+            <Image key={s} src={`/samples/market/${s}.jpg`} alt="" width={70} height={88} className="aspect-[4/5] w-full rounded-[10px] object-cover shadow-[0_0_0_1px_rgb(255_255_255/0.12)]" />
           ))}
         </div>
       </div>
@@ -83,7 +84,7 @@ export default function Welcome() {
         <div className="flex items-center gap-3">
           <LogoDraw size={52} />
           <div>
-            <h1 className="font-display text-3xl font-bold">{t("title")}</h1>
+            <h1 className="font-display text-[1.8rem] leading-tight font-semibold">{t("title")}</h1>
             <p className="text-lg text-ink-soft">{t("subtitle")}</p>
           </div>
         </div>
@@ -97,17 +98,17 @@ export default function Welcome() {
               style={{ animationDelay: `${i * 70}ms` }}
               onClick={() => pick(l)}
               className={cn(
-                "anim-rise flex min-h-24 items-center justify-between rounded-[var(--radius-card)] border-[3px] bg-paper px-6 text-left shadow-soft transition-transform active:scale-[0.97]",
-                l === locale ? "border-accent" : "border-transparent",
+                "anim-rise card-lux flex min-h-24 items-center justify-between px-6 text-left transition-[transform,box-shadow] hover:-translate-y-0.5 active:scale-[0.97]",
+                l === locale && "ring-2 ring-gold ring-offset-2 ring-offset-cream",
               )}
             >
               <span>
-                <span className="block text-3xl font-bold">{LOCALE_LABELS[l].native}</span>
+                <span className="block font-display text-[1.7rem] font-semibold">{LOCALE_LABELS[l].native}</span>
                 <span className="text-base text-ink-soft">
                   {GREETING[l]} · {LOCALE_LABELS[l].english}
                 </span>
               </span>
-              <span className={cn("flex size-10 items-center justify-center rounded-full transition-colors", l === locale ? "bg-accent text-on-accent" : "border-2 border-line")}>
+              <span className={cn("flex size-10 items-center justify-center rounded-full transition-colors", l === locale ? "bg-[linear-gradient(135deg,#fff3d4,#e9c877_45%,#c08a2e)] text-[#2b1d05]" : "edge")}>
                 {l === locale ? <Check className="size-6" aria-hidden /> : null}
               </span>
             </button>
@@ -145,14 +146,15 @@ export default function Welcome() {
             aria-live="polite"
           >
             <IntroArt n={stage} />
-            <h1 className="mt-10 font-display text-3xl font-bold">{ti(`s${stage + 1}t` as "s1t")}</h1>
+            <h1 className="mt-10 font-display text-[1.9rem] leading-tight font-semibold md:text-4xl">{ti(`s${stage + 1}t` as "s1t")}</h1>
+            <GoldRule className="mx-auto mt-4 w-32" />
             <p className="mx-auto mt-3 max-w-xs text-lg text-ink-soft">{ti(`s${stage + 1}b` as "s1b")}</p>
           </motion.section>
         </AnimatePresence>
       </motion.div>
       <div className="my-6 flex justify-center gap-2" aria-hidden>
         {[0, 1, 2].map((n) => (
-          <span key={n} className={cn("h-2 rounded-full transition-all duration-300", n === stage ? "w-8 bg-accent" : "w-2 bg-line")} />
+          <span key={n} className={cn("h-1.5 rounded-full transition-all duration-400", n === stage ? "w-9 bg-[linear-gradient(90deg,var(--gold-light),var(--gold))]" : "w-1.5 bg-line")} />
         ))}
       </div>
       <Button size="lg" block onClick={() => (stage < 2 ? setStage(stage + 1) : finish())}>

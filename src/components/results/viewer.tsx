@@ -105,7 +105,7 @@ export function Viewer({
 
           <div className="flex justify-center gap-2 py-2" aria-hidden>
             {images.map((im, i) => (
-              <span key={im.id} className={`h-2 rounded-full transition-all ${i === index ? "w-6 bg-saffron-500" : "w-2 bg-white/40"}`} />
+              <span key={im.id} className={`h-2 rounded-full transition-all ${i === index ? "w-7 bg-[linear-gradient(90deg,#f3dca2,#c08a2e)]" : "w-1.5 bg-white/35"}`} />
             ))}
           </div>
 

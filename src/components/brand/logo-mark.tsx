@@ -1,6 +1,11 @@
 import { cn } from "@/lib/utils";
+import { RangoliMotif } from "./ornaments";
 
-/** Rangoli Grid logo: an indigo tile with a slowly turning rangoli flower, plus the wordmark. */
+/**
+ * The brand mark: a deep indigo tile with a gold rangoli mandala turning slowly
+ * inside it, a 1px brass hairline, and a specular corner highlight. The wordmark
+ * is set in the serif display face with a foil gradient.
+ */
 export function LogoMark({
   size = 40,
   label = "DukaanShoot",
@@ -15,14 +20,20 @@ export function LogoMark({
   wordClass?: string;
 }) {
   return (
-    <span className={cn("inline-flex shrink-0 items-center gap-2", className)}>
-      <span className="flex shrink-0 items-center justify-center rounded-[30%] border-2 border-ink bg-night" style={{ width: size, height: size }} aria-hidden>
-        <svg className="spin-slow" width={size * 0.6} height={size * 0.6} viewBox="0 0 24 24" fill="none" stroke="#F4B66A" strokeWidth="1.9" strokeLinecap="round">
-          <circle cx="12" cy="12" r="3" />
-          <path d="M12 2v5M12 17v5M2 12h5M17 12h5M5 5l3.5 3.5M15.5 15.5 19 19M19 5l-3.5 3.5M8.5 15.5 5 19" />
-        </svg>
+    <span className={cn("inline-flex shrink-0 items-center gap-2.5", className)}>
+      <span
+        className="panel-night relative flex shrink-0 items-center justify-center rounded-[32%] shadow-[0_0_0_1px_color-mix(in_oklab,var(--gold)_45%,transparent),0_6px_16px_-8px_rgb(21_18_46/0.6)]"
+        style={{ width: size, height: size }}
+        aria-hidden
+      >
+        <span className="bg-kolam absolute inset-0 rounded-[32%] text-gold-light opacity-20" />
+        <RangoliMotif className="spin-slow relative text-gold-light" strokeWidth={2.4} size={Math.round(size * 0.72)} />
+        {/* glass highlight across the top-left corner */}
+        <span className="absolute inset-0 rounded-[32%] bg-[linear-gradient(145deg,rgb(255_255_255/0.28),transparent_45%)]" />
       </span>
-      {wordmark ? <span className={cn("font-display text-[21px] leading-none font-extrabold tracking-[-0.03em] lowercase", wordClass)}>{label}</span> : null}
+      {wordmark ? (
+        <span className={cn("font-display text-[21px] leading-none font-semibold tracking-[-0.02em]", wordClass)}>{label}</span>
+      ) : null}
     </span>
   );
 }

@@ -138,7 +138,7 @@ export function Studio() {
               void takeFile(e.dataTransfer.files?.[0]);
             }}
             className={cn(
-              "relative mt-3 flex aspect-[4/5] w-full flex-col items-center justify-center gap-3 overflow-hidden rounded-2xl border-[3px] border-dashed text-center transition-colors",
+              "relative mt-3 flex aspect-[4/5] w-full flex-col items-center justify-center gap-3 overflow-hidden rounded-[var(--radius-lux)] border-2 border-dashed bg-cream-deep/40 text-center transition-colors",
               dragging ? "border-accent bg-accent-soft" : "border-line hover:border-accent hover:bg-saffron-50",
             )}
           >

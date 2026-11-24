@@ -151,10 +151,10 @@ export default function CreditsPage() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.06 }}
-              className={cn("relative rounded-[var(--radius-card)] border-[3px] bg-paper p-4 shadow-soft", pack.tag === "popular" ? "border-saffron-500" : "border-transparent")}
+              className={cn("card-lux relative p-5", pack.tag === "popular" && "ring-2 ring-gold ring-offset-2 ring-offset-cream")}
             >
               {pack.tag ? (
-                <span className="absolute -top-3 left-4 rounded-full bg-saffron-500 px-3 py-0.5 text-sm font-bold text-ink">{pack.tag === "popular" ? t("popular") : t("best")}</span>
+                <span className="absolute -top-3 left-5 rounded-full bg-[linear-gradient(135deg,#fff3d4,#e9c877_45%,#c08a2e)] px-3 py-1 text-[11px] font-bold tracking-[0.12em] text-[#2b1d05] uppercase shadow-[0_0_0_1px_color-mix(in_oklab,var(--gold-deep)_45%,transparent),0_6px_14px_-6px_rgb(21_18_46/0.45)]">{pack.tag === "popular" ? t("popular") : t("best")}</span>
               ) : null}
               <div className="grid gap-3">
                 <div className="flex items-baseline justify-between gap-2 pt-1">

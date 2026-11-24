@@ -1,5 +1,5 @@
 "use client";
-import { ArrowRight, Eye, Mail, PlayCircle } from "lucide-react";
+import { ArrowRight, Eye, Mail, PlayCircle, ShoppingBag, Store } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
 import { LogoMark } from "@/components/brand/logo-mark";
@@ -99,16 +99,16 @@ function LoginInner() {
         <LanguageSwitcher />
       </div>
 
-      <h1 className="anim-rise mt-6 font-display text-[28px] leading-tight font-bold">{tr("title")}</h1>
+      <h1 className="anim-rise mt-6 font-display text-[1.8rem] leading-tight font-semibold md:text-[2.1rem]">{tr("title")}</h1>
 
       {/* "I want to SELL 🏪" / "I want to BUY 🛍️" */}
       <div className="mt-4 grid grid-cols-2 gap-3" role="radiogroup" aria-label={tr("title")}>
         {(
           [
-            ["seller", "🏪", tr("sell"), tr("sellHint")],
-            ["buyer", "🛍️", tr("buy"), tr("buyHint")],
+            ["seller", Store, tr("sell"), tr("sellHint")],
+            ["buyer", ShoppingBag, tr("buy"), tr("buyHint")],
           ] as const
-        ).map(([r, emoji, title, hint], i) => (
+        ).map(([r, Icon, title, hint], i) => (
           <button
             key={r}
             type="button"
@@ -118,14 +118,14 @@ function LoginInner() {
             style={{ animationDelay: `${80 + i * 80}ms` }}
             data-side={r}
             className={cn(
-              "anim-rise flex min-h-44 flex-col items-start gap-2 rounded-[var(--radius-card)] border-[3px] bg-paper p-4 text-left shadow-soft transition-[transform,border-color] active:scale-[0.97]",
-              role === r ? "border-accent shadow-lift" : "border-transparent",
+              "anim-rise card-lux flex min-h-44 flex-col items-start gap-2 p-5 text-left transition-[transform,box-shadow] hover:-translate-y-1 active:scale-[0.97]",
+              role === r && "ring-2 ring-gold ring-offset-2 ring-offset-cream",
             )}
           >
-            <span className="text-4xl" aria-hidden>
-              {emoji}
+            <span className="panel-night flex size-12 items-center justify-center rounded-2xl shadow-[0_0_0_1px_color-mix(in_oklab,var(--gold)_40%,transparent),0_8px_18px_-10px_rgb(21_18_46/0.6)]" aria-hidden>
+              <Icon className="size-6 text-gold-light" />
             </span>
-            <span className="font-display text-lg leading-tight font-bold">{title}</span>
+            <span className="font-display text-[1.15rem] leading-tight font-semibold">{title}</span>
             <span className="text-sm text-ink-soft">{hint}</span>
           </button>
         ))}
@@ -153,9 +153,9 @@ function LoginInner() {
         )}
 
         <div className="my-1 flex items-center gap-3 text-sm text-ink-soft" aria-hidden>
-          <span className="h-px flex-1 bg-line" />
+          <span className="rule-gold flex-1" />
           {tr("or")}
-          <span className="h-px flex-1 bg-line" />
+          <span className="rule-gold flex-1" />
         </div>
         <div className="grid grid-cols-2 gap-3">
           <Button variant="marigold" size="lg" onClick={() => demo("seller")} loading={busy === "demo-seller"} className="px-3 text-[15px]">

@@ -85,7 +85,7 @@ export function ProductClient({ initial }: { initial?: Product }) {
       <main className="mx-auto max-w-6xl px-4 pb-24 md:pb-10 lg:px-6">
         {!p ? (
           <div className="space-y-3">
-            <div className="skeleton aspect-[4/5] rounded-[var(--radius-card)]" />
+            <div className="skeleton aspect-[4/5] rounded-[var(--radius-lux)]" />
             <div className="skeleton h-6 w-3/4 rounded" />
             <div className="skeleton h-8 w-1/3 rounded" />
           </div>
@@ -94,7 +94,7 @@ export function ProductClient({ initial }: { initial?: Product }) {
             <div className="md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:items-start md:gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:gap-10">
             <div>
             {p.beforeImage ? (
-              <div className="mb-3 grid grid-cols-2 gap-1 rounded-full border-2 border-ink bg-paper p-1 lg:ml-[88px]" role="tablist">
+              <div className="edge mb-3 grid grid-cols-2 gap-1 rounded-full bg-paper p-1 shadow-soft lg:ml-[88px]" role="tablist">
                 {(["photos", "compare"] as const).map((k) => (
                   <button
                     key={k}
@@ -102,7 +102,7 @@ export function ProductClient({ initial }: { initial?: Product }) {
                     role="tab"
                     aria-selected={tab === k}
                     onClick={() => setTab(k)}
-                    className={cn("min-h-11 rounded-full text-[15px] font-bold transition-colors", tab === k ? "bg-ink text-cream" : "text-ink-soft hover:text-ink")}
+                    className={cn("min-h-11 rounded-full text-[15px] font-semibold transition-all duration-300", tab === k ? "panel-night text-[#fdf7ee] shadow-[0_4px_12px_-6px_rgb(21_18_46/0.6)]" : "text-ink-soft hover:text-ink")}
                   >
                     {k === "photos" ? tp("photos") : t("beforeAfter")}
                   </button>
@@ -118,14 +118,16 @@ export function ProductClient({ initial }: { initial?: Product }) {
 
             </div>
             <div className="md:sticky md:top-24">
-            <span className={cn(`tile-${p.category}`, "mt-5 inline-block -rotate-2 rounded-[10px] border-2 border-ink px-2.5 py-0.5 text-[13px] font-extrabold tracking-wide uppercase md:mt-0")}>{tcat(p.category)}</span>
+            <span className={cn(`tile tile-${p.category}`, "edge-gold mt-5 inline-block rounded-full px-3 py-1 text-[11px] font-bold tracking-[0.14em] uppercase shadow-soft md:mt-0")}>
+              <span className="relative">{tcat(p.category)}</span>
+            </span>
             <h1 className="anim-rise mt-2 font-display text-[1.75rem] leading-[1.02] md:text-4xl">{p.title}</h1>
             <div className="anim-rise mt-3 flex flex-wrap items-center gap-2.5" style={{ animationDelay: "80ms" }}>
-              <span className="rounded-[14px] border-2 border-ink bg-saffron-500 px-3 py-1 font-display text-2xl font-extrabold text-night shadow-lift md:text-3xl">{rupees(p.pricePaise)}</span>
+              <span className="font-display text-[2rem] leading-none font-semibold tracking-[-0.02em] md:text-[2.5rem]">{rupees(p.pricePaise)}</span>
               {off ? (
                 <>
                   <span className="text-lg text-ink-soft line-through">{rupees(p.mrpPaise!)}</span>
-                  <span className="rounded-lg border-2 border-ink bg-[#16A34A] px-2 py-0.5 text-sm font-extrabold text-white">{tm("off", { n: off })}</span>
+                  <span className="rounded-full bg-[linear-gradient(135deg,#1f9d57,#0f6b3a)] px-2.5 py-1 text-[12px] font-bold tracking-[0.06em] text-white shadow-[0_0_0_1px_rgb(255_255_255/0.3),0_6px_14px_-6px_rgb(0_0_0/0.5)]">{tm("off", { n: off })}</span>
                 </>
               ) : null}
             </div>
@@ -138,7 +140,8 @@ export function ProductClient({ initial }: { initial?: Product }) {
             </p>
 
             <section id="sizes" className="mt-5">
-              <h2 className="mb-2 text-xl">{t("sizes")}</h2>
+              <h2 className="mb-2 font-display text-lg font-semibold tracking-[0.01em]">{t("sizes")}</h2>
+              <span aria-hidden className="rule-gold mb-3 block max-w-[120px]" />
               <ChipGroup label={t("sizes")}>
                 {p.sizes.map((sz) => (
                   <Chip key={sz} selected={size === sz} onClick={() => setSize(sz)}>
@@ -162,15 +165,15 @@ export function ProductClient({ initial }: { initial?: Product }) {
 
             {p.description ? (
               <section className="mt-5">
-                <h2 className="mb-1 text-xl">{t("description")}</h2>
+                <h2 className="mb-1 font-display text-lg font-semibold">{t("description")}</h2>
                 <p className="leading-relaxed text-ink-soft">{p.description}</p>
               </section>
             ) : null}
 
             {/* seller shop card */}
             {s ? (
-              <section className="mt-5 rounded-[var(--radius-card)] bg-butter-tile p-4 shadow-warm" aria-label={t("soldBy")}>
-                <p className="text-sm font-bold tracking-wide uppercase">{t("soldBy")}</p>
+              <section className="card-lux mt-6 p-5" aria-label={t("soldBy")}>
+                <p className="text-[11px] font-bold tracking-[0.2em] text-gold-deep uppercase">{t("soldBy")}</p>
                 <div className="mt-2 flex items-center gap-3">
                   <ShopLogo shop={s} size={52} />
                   <div className="min-w-0 flex-1">

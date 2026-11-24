@@ -127,7 +127,7 @@ function OnboardingInner() {
                         aria-checked={type === s}
                         onClick={() => setType(s)}
                         className={cn(
-                          "flex min-h-20 flex-col items-center justify-center gap-1 rounded-2xl border-[3px] bg-paper text-[14px] font-semibold shadow-soft transition active:scale-95",
+                          "edge flex min-h-20 flex-col items-center justify-center gap-1 rounded-2xl bg-paper text-[14px] font-semibold shadow-soft transition hover:-translate-y-0.5 active:scale-95",
                           type === s ? "border-accent" : "border-transparent",
                         )}
                       >

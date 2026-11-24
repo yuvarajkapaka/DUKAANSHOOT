@@ -28,7 +28,7 @@ export function HeartButton({ productId, className, size = "md" }: { productId: 
         if (r) setBurst((b) => b + 1);
       }}
       className={cn(
-        "relative flex items-center justify-center rounded-2xl border-2 border-[#1E1B4B] transition-[transform,background-color] active:scale-90",
+        "glass-paper relative flex items-center justify-center rounded-full shadow-[0_0_0_1px_var(--hairline),0_6px_16px_-8px_rgb(21_18_46/0.5)] transition-[transform,background-color] active:scale-90",
         on ? "bg-[#E11D48]" : "bg-white",
         size === "lg" ? "size-14" : "size-12",
         className,

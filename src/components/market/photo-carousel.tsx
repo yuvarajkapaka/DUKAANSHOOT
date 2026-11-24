@@ -54,7 +54,7 @@ export const PhotoCarousel = forwardRef<HTMLDivElement, { images: string[]; alt:
                 aria-label={t("photo", { n: n + 1, total: images.length })}
                 onClick={() => setI(n)}
                 onMouseEnter={() => setI(n)}
-                className={cn("relative aspect-[4/5] overflow-hidden rounded-xl border-2 bg-saffron-50 transition-colors", n === i ? "border-ink" : "border-transparent opacity-70 hover:opacity-100")}
+                className={cn("relative aspect-[4/5] overflow-hidden rounded-xl bg-cream-deep transition-all duration-300", n === i ? "shadow-[0_0_0_2px_var(--gold)]" : "opacity-60 shadow-[0_0_0_1px_var(--hairline)] hover:opacity-100")}
               >
                 <SmartImage src={src} alt="" sizes="76px" />
               </button>
@@ -63,11 +63,11 @@ export const PhotoCarousel = forwardRef<HTMLDivElement, { images: string[]; alt:
         ) : (
           <span className="hidden lg:block" />
         )}
-        {/* Rangoli Grid: the photo sits in a teal tile */}
-        <div className="anim-pop-in rounded-[28px] bg-[#0F766E] p-2 shadow-warm md:p-3">
+        {/* a gallery mount: paper, brass hairline, generous margin around the print */}
+        <div className="anim-pop-in card-lux edge-gold p-2.5 md:p-3.5">
         <div
           ref={heroRef}
-          className="relative aspect-[4/5] overflow-hidden rounded-[20px] bg-saffron-50 [@media(hover:hover)]:cursor-zoom-in"
+          className="relative aspect-[4/5] overflow-hidden rounded-[20px] bg-cream-deep shadow-[inset_0_0_0_1px_var(--hairline)] [@media(hover:hover)]:cursor-zoom-in"
           style={{ viewTransitionName: "product-hero" }}
           onMouseMove={(e) => {
             if (window.innerWidth < 1024) return;
@@ -117,7 +117,7 @@ export const PhotoCarousel = forwardRef<HTMLDivElement, { images: string[]; alt:
                 onClick={() => setI(n)}
                 className="flex h-6 min-w-6 items-center justify-center"
               >
-                <span className={cn("h-2 rounded-full transition-all duration-300", n === i ? "w-6 bg-ink" : "w-2 bg-line")} />
+                <span className={cn("h-1.5 rounded-full transition-all duration-300", n === i ? "w-7 bg-[linear-gradient(90deg,var(--gold-light),var(--gold))]" : "w-1.5 bg-line")} />
               </button>
             ))}
           </div>

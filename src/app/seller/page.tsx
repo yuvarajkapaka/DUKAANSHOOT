@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AppHeader } from "@/components/app-chrome";
+import { GoldRule, Grain, Jaali, RangoliMotif, SectionHead, TempleBorder, Zari } from "@/components/brand/ornaments";
 import { useMarketQuery, useMarketState } from "@/components/market-state";
 import { OrderCard } from "@/components/market/order-card";
 import { useAuthed } from "@/components/providers";
@@ -21,6 +22,7 @@ const STAT_TILES = ["tile-sarees", "tile-kurtas", "tile-lehengas", "tile-kids"];
 export default function SellerDashboard() {
   const t = useTranslations("seller");
   const th = useTranslations("home");
+  const tn = useTranslations("nav");
   const router = useRouter();
   const reset = useCreateStore((s) => s.reset);
   const { market, profile } = useAuthed();
@@ -54,15 +56,21 @@ export default function SellerDashboard() {
         }}
       >
         <main className="mx-auto max-w-6xl px-4 lg:px-6">
-          <h1 className="anim-rise font-display text-3xl leading-none">{th("greeting", { name: profile.shopName })}</h1>
+          <div className="anim-rise pt-1">
+            <p className="flex items-center gap-2 text-[11px] font-bold tracking-[0.2em] text-gold-deep uppercase">
+              <Zari className="size-2.5" />
+              {tn("dashboard")}
+            </p>
+            <h1 className="mt-1 font-display text-[1.9rem] leading-tight md:text-4xl">{th("greeting", { name: profile.shopName })}</h1>
+          </div>
 
           {waiting ? (
-            <Link href="/seller/orders" className="anim-rise mt-3 flex min-h-14 items-center gap-3 rounded-2xl bg-[#E11D48] px-4 text-white shadow-warm transition-transform hover:-translate-y-0.5">
+            <Link href="/seller/orders" className="anim-rise relative mt-4 flex min-h-14 items-center gap-3 overflow-hidden rounded-full bg-[linear-gradient(120deg,#d42a52,#9b0e32)] px-5 text-white shadow-warm transition-transform hover:-translate-y-0.5">
               <span className="relative flex size-3">
                 <span className="absolute inline-flex size-full rounded-full bg-white" style={{ animation: "soft-pulse 1.4s infinite" }} />
                 <span className="relative inline-flex size-3 rounded-full bg-white" />
               </span>
-              <span className="flex-1 font-bold">
+              <span className="relative flex-1 font-display text-[17px] font-semibold">
                 {waiting} · {t("newOrders")}
               </span>
               <ArrowRight className="size-5" aria-hidden />
@@ -76,14 +84,14 @@ export default function SellerDashboard() {
                 key={label}
                 href={href}
                 style={{ "--i": i } as React.CSSProperties}
-                className={cn(STAT_TILES[i % STAT_TILES.length], "flex min-h-32 flex-col justify-between rounded-[var(--radius-card)] border-2 border-ink p-3.5 transition-[transform,box-shadow] hover:-translate-y-1 hover:-rotate-1 hover:shadow-lift active:scale-[0.97] md:p-4")}
+                className={cn(STAT_TILES[i % STAT_TILES.length], "tile tile-hover edge-gold flex min-h-32 flex-col justify-between rounded-[var(--radius-lux)] p-4 shadow-soft active:scale-[0.97] md:p-5")}
               >
-                <span className="flex size-10 items-center justify-center rounded-xl border-2 border-current/40 bg-white/15">
+                <span className="relative flex size-10 items-center justify-center rounded-xl bg-white/20 shadow-[0_0_0_1px_rgb(255_255_255/0.28),inset_0_1px_0_rgb(255_255_255/0.4)] backdrop-blur-sm">
                   <Icon className="size-5" aria-hidden />
                 </span>
-                <span>
-                  <span className="block font-display text-3xl leading-none font-extrabold md:text-4xl">{ready ? <Counter value={value} /> : <span className="skeleton inline-block h-8 w-12 rounded" />}</span>
-                  <span className="mt-1 block text-[14px] leading-tight font-bold opacity-85">{label}</span>
+                <span className="relative">
+                  <span className="block font-display text-[2.1rem] leading-none font-semibold md:text-[2.6rem]">{ready ? <Counter value={value} /> : <span className="skeleton inline-block h-8 w-12 rounded" />}</span>
+                  <span className="mt-1.5 block text-[13px] leading-tight font-semibold tracking-[0.04em] uppercase opacity-80">{label}</span>
                 </span>
               </Link>
             ))}
@@ -97,32 +105,37 @@ export default function SellerDashboard() {
               reset();
               router.push("/seller/create/capture");
             }}
-            className="relative mt-4 flex w-full items-center gap-4 overflow-hidden rounded-[var(--radius-card)] bg-saffron-500 p-5 text-left text-night shadow-warm transition-transform hover:-translate-y-1 lg:col-start-2 lg:mt-0"
+            className="panel-night sheen relative mt-5 flex w-full items-center gap-4 overflow-hidden rounded-[var(--radius-lux)] p-5 text-left shadow-warm transition-transform hover:-translate-y-1 lg:col-start-2 lg:mt-0"
           >
-            <svg className="spin-slow absolute -top-8 -right-8 size-28 text-saffron-300/70" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" aria-hidden><circle cx="12" cy="12" r="3" /><path d="M12 2v5M12 17v5M2 12h5M17 12h5M5 5l3.5 3.5M15.5 15.5 19 19M19 5l-3.5 3.5M8.5 15.5 5 19" /></svg>
-            <span className="relative flex size-16 shrink-0 items-center justify-center rounded-2xl border-2 border-[#1E1B4B] bg-[#FFF4E0]">
-              <Camera className="size-8 text-night" aria-hidden />
+            <Jaali className="text-gold-light opacity-[0.1]" />
+            <RangoliMotif className="spin-slow absolute -top-10 -right-10 size-40 text-gold-light opacity-[0.18]" />
+            <Grain />
+            <TempleBorder className="absolute inset-x-0 top-0 h-1.5 text-gold opacity-60" />
+            <span className="relative flex size-16 shrink-0 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,#fff3d4,#e9c877_45%,#c08a2e)] shadow-[0_8px_20px_-8px_rgb(0_0_0/0.7)]">
+              <Camera className="size-8 text-[#2b1d05]" aria-hidden />
             </span>
             <span className="relative">
-              <span className="block font-display text-2xl leading-tight font-extrabold">{t("makePhotos")}</span>
-              <span className="text-[15px] font-medium">{t("makePhotosHint")}</span>
+              <span className="text-foil block font-display text-2xl leading-tight font-semibold">{t("makePhotos")}</span>
+              <span className="text-[15px] font-medium text-[#efe9ff]/75">{t("makePhotosHint")}</span>
             </span>
           </motion.button>
 
           <section className="mt-6 lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:mt-0" aria-labelledby="ro">
-            <div className="mb-3 flex items-center justify-between">
-              <h2 id="ro" className="text-2xl">
-                {t("recentOrders")}
-              </h2>
-              <Link href="/seller/orders" className="inline-flex min-h-12 items-center gap-1 font-bold underline decoration-2 underline-offset-4 hover:text-accent-strong">
-                {t("seeOrders")}
-                <ArrowRight className="size-4" aria-hidden />
-              </Link>
-            </div>
+            <SectionHead
+              id="ro"
+              eyebrow={t("todayOrders")}
+              title={t("recentOrders")}
+              action={
+                <Link href="/seller/orders" className="inline-flex min-h-11 items-center gap-1 font-semibold text-accent-strong underline decoration-gold decoration-1 underline-offset-[6px] hover:decoration-2">
+                  {t("seeOrders")}
+                  <ArrowRight className="size-4" aria-hidden />
+                </Link>
+              }
+            />
             {!orders.data ? (
               <div className="skeleton h-28 rounded-[var(--radius-card)]" />
             ) : !orders.data.length ? (
-              <p className="rounded-[var(--radius-card)] border-2 border-dashed border-line p-5 text-center text-ink-soft">{t("noOrders")}</p>
+              <p className="rounded-[var(--radius-lux)] border border-dashed border-gold/40 bg-gold-soft/30 p-6 text-center text-ink-soft">{t("noOrders")}</p>
             ) : (
               <div className="stagger grid gap-3">
                 {orders.data.slice(0, 5).map((o, i) => (
@@ -133,10 +146,14 @@ export default function SellerDashboard() {
           </section>
 
           {s ? (
-            <section className="mt-6 rounded-[var(--radius-card)] bg-butter-tile p-4 shadow-warm lg:col-start-2 lg:mt-0">
-              <p className="text-sm font-bold tracking-wide uppercase">{t("yourShop")}</p>
-              <p className="mt-1 truncate font-mono text-[15px]">/shop/{s.slug}</p>
-              <div className="mt-3 grid grid-cols-2 gap-2">
+            <section className="card-lux mt-6 p-5 lg:col-start-2 lg:mt-0">
+              <p className="flex items-center gap-2 text-[11px] font-bold tracking-[0.2em] text-gold-deep uppercase">
+                <Zari className="size-2.5" />
+                {t("yourShop")}
+              </p>
+              <p className="mt-1.5 truncate font-mono text-[15px] text-ink-soft">/shop/{s.slug}</p>
+              <GoldRule className="mt-3" diamond={false} />
+              <div className="mt-4 grid grid-cols-2 gap-2">
                 <Button asChild variant="soft" size="sm">
                   <Link href="/seller/shop">
                     <Store aria-hidden />

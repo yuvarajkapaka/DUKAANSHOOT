@@ -28,6 +28,7 @@ import { useIsDesktop, useSidebarCollapsed } from "@/lib/client/use-media";
 import { CATEGORIES } from "@/lib/market/types";
 import { cn } from "@/lib/utils";
 import { LogoMark } from "./brand/logo-mark";
+import { Zari } from "./brand/ornaments";
 import { LanguageSwitcher } from "./language-switcher";
 import { CartDrawer } from "./market/cart-drawer";
 import { useMarketState } from "./market-state";
@@ -36,7 +37,12 @@ import { useInstallPrompt } from "./service-worker";
 
 export function DemoBadge({ className }: { className?: string }) {
   const t = useTranslations("common");
-  return <span className={cn("inline-flex items-center rounded-full bg-night px-2.5 py-1 text-xs font-bold tracking-wide text-saffron-300 uppercase", className)}>{t("demo")}</span>;
+  return (
+    <span className={cn("panel-night inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold tracking-[0.14em] text-gold-light uppercase shadow-[0_0_0_1px_color-mix(in_oklab,var(--gold)_40%,transparent)]", className)}>
+      <Zari className="size-2" />
+      {t("demo")}
+    </span>
+  );
 }
 
 export function CreditsPill() {
@@ -46,11 +52,11 @@ export function CreditsPill() {
   return (
     <Link
       href="/seller/credits"
-      className={cn("inline-flex min-h-12 items-center gap-1.5 rounded-full px-3 text-[15px] font-semibold shadow-soft transition-transform hover:-translate-y-0.5", profile.credits < 4 ? "bg-red-50 text-danger" : "bg-paper")}
+      className={cn("edge inline-flex min-h-12 items-center gap-1.5 rounded-full px-3.5 font-display text-[16px] font-semibold shadow-soft transition-transform hover:-translate-y-0.5", profile.credits < 4 ? "bg-red-50 text-danger" : "bg-paper")}
       aria-label={t("photosLeft", { count: profile.credits })}
       title={t("photosLeft", { count: profile.credits })}
     >
-      <Coins className="size-5 text-saffron-700" aria-hidden />
+      <Coins className="size-5 text-gold" aria-hidden />
       <motion.span key={profile.credits} initial={{ y: -6, opacity: 0 }} animate={{ y: 0, opacity: 1 }}>
         {profile.credits}
       </motion.span>
@@ -68,13 +74,13 @@ function Badge({ n, bumpEvent }: { n: number; bumpEvent?: string }) {
   }, [bumpEvent]);
   if (!n) return null;
   return (
-    <span key={k} className={cn("absolute -top-2.5 -right-3 flex min-w-5 items-center justify-center rounded-full bg-accent px-1 text-xs leading-5 font-extrabold text-on-accent ring-2 ring-ink", k && "anim-bump")}>
+    <span key={k} className={cn("absolute -top-2.5 -right-3 flex min-w-5 items-center justify-center rounded-full bg-accent px-1 text-[11px] leading-5 font-extrabold text-on-accent ring-2 ring-paper shadow-[0_2px_6px_-2px_rgb(21_18_46/0.6)]", k && "anim-bump")}>
       {n > 9 ? "9+" : n}
     </span>
   );
 }
 
-const iconBtn = "relative inline-flex size-12 shrink-0 items-center justify-center rounded-2xl border-2 border-ink bg-paper transition-transform hover:-translate-y-0.5 active:translate-y-px";
+const iconBtn = "edge relative inline-flex size-12 shrink-0 items-center justify-center rounded-2xl bg-paper shadow-soft transition-[transform,box-shadow] hover:-translate-y-0.5 hover:shadow-warm active:translate-y-px";
 
 export function BellButton({ withLabel }: { withLabel?: boolean }) {
   const { profile } = useSession();
@@ -129,7 +135,7 @@ export function InstallButton({ className }: { className?: string }) {
   const { available, install } = useInstallPrompt();
   if (!available) return null;
   return (
-    <button type="button" onClick={install} className={cn("inline-flex min-h-12 shrink-0 items-center gap-2 rounded-full bg-night px-4 text-[15px] font-semibold text-white transition-transform hover:-translate-y-0.5", className)}>
+    <button type="button" onClick={install} className={cn("panel-night inline-flex min-h-12 shrink-0 items-center gap-2 rounded-full px-4 text-[15px] font-semibold text-[#fdf7ee] shadow-[0_0_0_1px_color-mix(in_oklab,var(--gold)_35%,transparent),var(--shadow-e2)] transition-transform hover:-translate-y-0.5", className)}>
       <Download className="size-5" aria-hidden />
       {t("install")}
     </button>
@@ -161,9 +167,9 @@ function SearchBoxInner({ big }: { big?: boolean }) {
         e.preventDefault();
         router.push(`/search?q=${encodeURIComponent(q.trim())}`);
       }}
-      className={cn("flex min-w-0 flex-1 items-center gap-2 rounded-full border-2 border-ink bg-paper px-4 focus-within:border-accent", big ? "min-h-13" : "min-h-12")}
+      className={cn("edge flex min-w-0 flex-1 items-center gap-2 rounded-full bg-paper px-4 shadow-soft transition-shadow focus-within:shadow-[0_0_0_1px_color-mix(in_oklab,var(--gold)_60%,transparent),0_0_0_4px_color-mix(in_oklab,var(--gold)_18%,transparent)]", big ? "min-h-13" : "min-h-12")}
     >
-      <Search className="size-5 shrink-0 text-accent-strong" aria-hidden />
+      <Search className="size-5 shrink-0 text-gold-deep" aria-hidden />
       <input
         ref={ref}
         id="site-search"
@@ -175,7 +181,7 @@ function SearchBoxInner({ big }: { big?: boolean }) {
         aria-label={t("searchPlaceholder")}
         className="min-h-11 w-full min-w-0 bg-transparent text-base outline-none"
       />
-      <kbd className="hidden shrink-0 rounded-md border border-line px-1.5 text-xs text-ink-soft xl:inline" aria-hidden>
+      <kbd className="hidden shrink-0 rounded-md border border-line bg-cream-deep px-1.5 text-xs text-ink-soft xl:inline" aria-hidden>
         /
       </kbd>
     </form>
@@ -183,7 +189,7 @@ function SearchBoxInner({ big }: { big?: boolean }) {
 }
 function SearchBox(props: { big?: boolean }) {
   return (
-    <Suspense fallback={<div className="min-h-12 flex-1 rounded-full border-2 border-ink bg-paper" />}>
+    <Suspense fallback={<div className="edge min-h-12 flex-1 rounded-full bg-paper shadow-soft" />}>
       <SearchBoxInner {...props} />
     </Suspense>
   );
@@ -213,7 +219,7 @@ function CategoriesMenu() {
         <ChevronDown className={cn("size-4 transition-transform", open && "rotate-180")} aria-hidden />
       </button>
       {open ? (
-        <div className="anim-fade absolute top-full left-0 z-40 mt-2 grid w-56 gap-1 rounded-2xl bg-paper p-2 shadow-warm">
+        <div className="anim-fade card-lux absolute top-full left-0 z-40 mt-2 grid w-56 gap-1 p-2">
           {CATEGORIES.map((c) => (
             <Link key={c} href={`/search?category=${c}`} onClick={() => setOpen(false)} className="flex min-h-11 items-center rounded-xl px-3 font-medium hover:bg-accent-soft">
               {t(c)}
@@ -283,7 +289,7 @@ export function AppHeader({
 
   return (
     <>
-      <header className={cn("safe-top sticky top-0 z-30 transition-[background-color,box-shadow] duration-200", collapsed ? "bg-cream/95 shadow-[0_2px_0_var(--fg)] backdrop-blur-md" : "bg-cream", buyer && "lg:bg-paper lg:shadow-[0_2px_0_var(--fg)]")}>
+      <header className={cn("safe-top sticky top-0 z-30 transition-[background-color,box-shadow] duration-300", collapsed ? "glass chrome-edge" : "bg-cream", buyer && "chrome-buyer")}>
         {/* phone + tablet */}
         <div className={cn("mx-auto flex min-h-16 items-center gap-1.5 px-3 min-[400px]:gap-2 min-[400px]:px-4", buyer && "lg:hidden", width)}>
           {backBtn ?? (buyer || !profile ? logo : <span className="md:hidden">{logo}</span>)}
@@ -348,7 +354,7 @@ export function AppHeader({
         <div className={cn("mx-auto px-4 lg:px-6", width)}>
           {back ? <div className="hidden pt-3 lg:block">{backBtn}</div> : null}
           {title ? (
-            <h1 className={cn("origin-left pt-1 pb-2 font-display text-[28px] leading-tight transition-[opacity,transform] duration-200 md:text-3xl", collapsed ? "-translate-y-2 scale-95 opacity-0 md:translate-y-0 md:scale-100 md:opacity-100" : "opacity-100", !buyer && "md:hidden")}>{title}</h1>
+            <h1 className={cn("origin-left pt-1 pb-2 font-display text-[1.75rem] leading-tight transition-[opacity,transform] duration-200 md:text-[2rem]", collapsed ? "-translate-y-2 scale-95 opacity-0 md:translate-y-0 md:scale-100 md:opacity-100" : "opacity-100", !buyer && "md:hidden")}>{title}</h1>
           ) : null}
         </div>
       ) : null}
@@ -387,15 +393,15 @@ export function BottomNav({ side }: { side: "buyer" | "seller" }) {
   const items = side === "seller" ? SELLER_NAV : BUYER_NAV;
   const active = useActive(items);
   return (
-    <nav className="safe-bottom no-print fixed inset-x-0 bottom-0 z-30 border-t-2 border-ink bg-paper md:hidden" aria-label={t("main")}>
+    <nav className="safe-bottom no-print glass-paper fixed inset-x-0 bottom-0 z-30 border-t border-hairline shadow-[0_-8px_24px_-18px_rgb(21_18_46/0.6)] md:hidden" aria-label={t("main")}>
       <ul className="mx-auto grid max-w-[560px] grid-cols-5">
         {items.map(({ href, icon: Icon, key }) => {
           const on = active === href;
           return (
             <li key={href}>
               <Link href={href} aria-current={on ? "page" : undefined} className={cn("relative flex min-h-16 flex-col items-center justify-center gap-0.5 text-[12px] leading-tight font-semibold", on ? "text-ink" : "text-ink-soft")}>
-                {on ? <motion.span layoutId={`nav-pill-${side}`} className="absolute top-1.5 h-8 w-14 rounded-full border-2 border-ink bg-saffron-500" transition={{ type: "spring", stiffness: 300, damping: 30 }} /> : null}
-                <Icon key={on ? "on" : "off"} className={cn("relative size-6", on && "anim-bounce text-night")} aria-hidden />
+                {on ? <motion.span layoutId={`nav-pill-${side}`} className="absolute top-1.5 h-8 w-14 rounded-full bg-[linear-gradient(135deg,#fff3d4,#e9c877_45%,#c08a2e)] shadow-[0_0_0_1px_color-mix(in_oklab,var(--gold-deep)_45%,transparent),0_6px_14px_-6px_rgb(21_18_46/0.5)]" transition={{ type: "spring", stiffness: 300, damping: 30 }} /> : null}
+                <Icon key={on ? "on" : "off"} className={cn("relative size-6", on && "anim-bounce text-[#2b1d05]")} aria-hidden />
                 <span className="relative max-w-full truncate px-0.5">{t(key)}</span>
               </Link>
             </li>
@@ -422,7 +428,7 @@ export function SideNav({ side }: { side: "buyer" | "seller" }) {
     <nav
       aria-label={t("main")}
       className={cn(
-        "no-print safe-top fixed inset-y-0 left-0 z-30 hidden flex-col gap-1 border-r-2 border-ink bg-paper px-3 pb-4 md:flex",
+        "no-print safe-top glass-paper fixed inset-y-0 left-0 z-30 hidden flex-col gap-1 border-r border-hairline px-3 pb-4 shadow-[1px_0_24px_-18px_rgb(21_18_46/0.6)] md:flex",
         side === "buyer" && "lg:hidden",
         full ? "w-[var(--sidebar-w)]" : "w-[76px]",
       )}
@@ -445,9 +451,9 @@ export function SideNav({ side }: { side: "buyer" | "seller" }) {
               on ? "text-ink" : "text-ink-soft",
             )}
           >
-            {on ? <motion.span layoutId={`rail-pill-${side}`} className="absolute inset-0 rounded-2xl border-2 border-ink bg-saffron-500" transition={{ type: "spring", stiffness: 300, damping: 30 }} /> : null}
-            <Icon key={on ? "on" : "off"} className={cn("relative size-6 shrink-0", on && "anim-bounce text-night")} aria-hidden />
-            {full ? <span className={cn("relative", on && "font-extrabold text-night")}>{t(key)}</span> : null}
+            {on ? <motion.span layoutId={`rail-pill-${side}`} className="absolute inset-0 rounded-2xl bg-[linear-gradient(135deg,#fff3d4,#e9c877_45%,#c08a2e)] shadow-[0_0_0_1px_color-mix(in_oklab,var(--gold-deep)_45%,transparent),0_8px_18px_-8px_rgb(21_18_46/0.45)]" transition={{ type: "spring", stiffness: 300, damping: 30 }} /> : null}
+            <Icon key={on ? "on" : "off"} className={cn("relative size-6 shrink-0", on && "anim-bounce text-[#2b1d05]")} aria-hidden />
+            {full ? <span className={cn("relative", on && "font-bold text-[#2b1d05]")}>{t(key)}</span> : null}
           </Link>
         );
       })}
@@ -489,7 +495,7 @@ export function PageSkeleton() {
   return (
     <div className="mx-auto max-w-5xl space-y-4 p-4" aria-busy="true">
       <div className="skeleton h-12 rounded-2xl" />
-      <div className="skeleton h-40 rounded-[var(--radius-card)]" />
+      <div className="skeleton h-40 rounded-[var(--radius-lux)]" />
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
         {[0, 1, 2, 3].map((i) => (
           <div key={i} className="skeleton aspect-[4/5] rounded-[var(--radius-card)]" />

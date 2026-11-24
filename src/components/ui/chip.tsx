@@ -4,7 +4,7 @@ import { Check } from "lucide-react";
 import { haptic } from "@/lib/client/effects";
 import { cn } from "@/lib/utils";
 
-/** Big, round choice chip (Rangoli Grid). Selected = filled with ink + a checkmark pops in. */
+/** Big, round choice chip. Selected = an indigo night face with a brass hairline + a checkmark pops in. */
 export function Chip({
   selected,
   onClick,
@@ -30,8 +30,10 @@ export function Chip({
         onClick();
       }}
       className={cn(
-        "inline-flex min-h-12 items-center gap-2 rounded-full border-2 border-ink px-4 text-[15px] font-bold transition-[transform,background-color,color] duration-150 active:scale-95",
-        selected ? "bg-ink text-cream" : "bg-paper text-ink hover:bg-saffron-50",
+        "inline-flex min-h-12 items-center gap-2 rounded-full px-4 text-[15px] font-semibold transition-[transform,background-color,color,box-shadow] duration-200 active:scale-95",
+        selected
+          ? "panel-night text-[#fdf7ee] shadow-[0_0_0_1px_color-mix(in_oklab,var(--gold)_45%,transparent),0_8px_18px_-8px_rgb(21_18_46/0.5)]"
+          : "edge bg-paper text-ink shadow-soft hover:-translate-y-0.5 hover:bg-cream-deep",
         className,
       )}
     >

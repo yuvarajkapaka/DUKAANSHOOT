@@ -83,9 +83,9 @@ export function ProductCard({ product, shop, index = 0, priority }: { product: P
         onPointerLeave={endPress}
         onPointerCancel={endPress}
         onContextMenu={(e) => press.current.fired && e.preventDefault()}
-        className="block rounded-[22px] bg-paper p-2 shadow-soft transition-[transform,box-shadow] duration-200 select-none active:scale-[0.98] hover:-translate-y-1 hover:-rotate-[0.6deg] hover:shadow-warm"
+        className="card-lux block p-2.5 transition-[transform,box-shadow] duration-300 select-none active:scale-[0.98] hover:-translate-y-1.5 hover:shadow-warm"
       >
-        <div ref={imgRef} className="relative aspect-[4/5] overflow-hidden rounded-[15px] bg-saffron-50">
+        <div ref={imgRef} className="relative aspect-[4/5] overflow-hidden rounded-[20px] bg-cream-deep shadow-[inset_0_0_0_1px_var(--hairline)]">
           <div className="absolute inset-0 transition-transform duration-500 ease-out group-hover:scale-105">
             <SmartImage src={product.images[0]} alt={product.title} priority={priority} sizes={CARD_SIZES} className={cn(sold && "grayscale-[60%]")} />
           </div>
@@ -95,15 +95,15 @@ export function ProductCard({ product, shop, index = 0, priority }: { product: P
               <SmartImage src={product.images[1]} alt="" sizes={CARD_SIZES} />
             </div>
           ) : null}
-          {sold ? <span className="absolute inset-x-0 bottom-0 bg-night/85 py-1.5 text-center text-sm font-bold text-white">{t("soldOut")}</span> : null}
-          {!sold && off ? <span className="absolute top-2 left-2 rounded-lg border-2 border-[#1E1B4B] bg-[#16A34A] px-1.5 py-0.5 text-xs font-extrabold text-white">{t("off", { n: off })}</span> : null}
-          {!sold && product.stock <= 3 ? <span className="absolute bottom-2 left-2 rounded-lg border-2 border-[#1E1B4B] bg-white px-1.5 py-0.5 text-xs font-bold text-danger">{t("onlyLeft", { n: product.stock })}</span> : null}
+          {sold ? <span className="absolute inset-x-0 bottom-0 bg-[linear-gradient(0deg,rgb(13_10_31/0.92),rgb(13_10_31/0.6))] py-2 text-center text-[13px] font-bold tracking-[0.12em] text-gold-light uppercase backdrop-blur-sm">{t("soldOut")}</span> : null}
+          {!sold && off ? <span className="absolute top-2.5 left-2.5 rounded-full bg-[linear-gradient(135deg,#1f9d57,#0f6b3a)] px-2 py-1 text-[11px] font-bold tracking-[0.06em] text-white shadow-[0_0_0_1px_rgb(255_255_255/0.35),0_4px_10px_-4px_rgb(0_0_0/0.6)]">{t("off", { n: off })}</span> : null}
+          {!sold && product.stock <= 3 ? <span className="glass-paper absolute bottom-2.5 left-2.5 rounded-full px-2 py-1 text-[11px] font-bold text-danger shadow-[0_0_0_1px_var(--hairline)]">{t("onlyLeft", { n: product.stock })}</span> : null}
           {/* sticker price tag: wiggles while the card is hovered */}
-          {!sold ? <span className="sticker sticker-hover absolute right-2 bottom-2.5 px-2 py-0.5 font-display text-[15px] md:text-base">{rupees(product.pricePaise)}</span> : null}
+          {!sold ? <span className="sticker sticker-hover absolute right-2.5 bottom-2.5 px-2.5 py-1 font-display text-[15px] md:text-base">{rupees(product.pricePaise)}</span> : null}
         </div>
         <div className="px-1.5 pt-2 pb-1">
-          <p className="line-clamp-2 min-h-[2.6em] text-[15px] leading-snug font-bold">{product.title}</p>
-          <p className="mt-0.5 flex items-baseline gap-1.5 text-[13px] text-ink-soft">
+          <p className="line-clamp-2 min-h-[2.5em] font-display text-[15px] leading-snug font-semibold">{product.title}</p>
+          <p className="mt-1 flex items-baseline gap-1.5 text-[13px] text-ink-soft">
             {sold ? <span className="font-display text-base font-bold text-ink">{rupees(product.pricePaise)}</span> : null}
             {off ? <span className="line-through">{rupees(product.mrpPaise!)}</span> : null}
             {shop ? <span className="truncate">{shop.name} · {shop.city}</span> : null}
@@ -123,8 +123,8 @@ export function ProductGridSkeleton({ n = 6, wide }: { n?: number; wide?: boolea
   return (
     <div className={cn("grid grid-cols-2 gap-3 md:gap-4", wide ? "md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6" : "md:grid-cols-3")} aria-busy="true">
       {Array.from({ length: n }, (_, i) => (
-        <div key={i} className="rounded-[22px] bg-paper p-2 shadow-soft">
-          <div className="skeleton aspect-[4/5] rounded-[15px]" />
+        <div key={i} className="card-lux p-2.5">
+          <div className="skeleton aspect-[4/5] rounded-[20px]" />
           <div className="space-y-2 px-1.5 pt-2.5 pb-1">
             <div className="skeleton h-4 rounded" />
             <div className="skeleton h-5 w-1/2 rounded" />

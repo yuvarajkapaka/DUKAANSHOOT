@@ -32,7 +32,7 @@ export function LookOptions({ look, setLook, panel }: { look: Look; setLook: (p:
   const t = useTranslations("look");
   const tb = useTranslations("backgrounds");
   const kid = look.gender === "girl" || look.gender === "boy";
-  const selected = "z-10 scale-105 border-accent shadow-[0_0_0_4px_var(--accent-glow),0_10px_24px_-8px_var(--accent-glow)]";
+  const selected = "z-10 scale-[1.04] shadow-[0_0_0_2px_var(--gold),0_0_0_6px_color-mix(in_oklab,var(--gold)_20%,transparent),0_14px_30px_-12px_rgb(21_18_46/0.45)]";
   return (
     <div>
       <Section title={t("model")}>
@@ -44,7 +44,7 @@ export function LookOptions({ look, setLook, panel }: { look: Look; setLook: (p:
               role="radio"
               aria-checked={look.gender === g}
               onClick={() => setLook({ gender: g })}
-              className={cn("overflow-hidden rounded-2xl border-[3px] bg-paper shadow-soft transition-[transform,box-shadow,border-color] duration-200 hover:-translate-y-0.5 active:scale-95", look.gender === g ? selected : "border-transparent")}
+              className={cn("edge overflow-hidden rounded-2xl bg-paper shadow-soft transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 active:scale-95", look.gender === g ? selected : "")}
             >
               <Image src={MODEL_PHOTOS[g]} alt="" width={160} height={200} sizes="(max-width: 767px) 25vw, 160px" className="aspect-square w-full object-cover object-top" />
               <span className="block py-2 text-[15px] font-semibold">{t(g)}</span>
@@ -102,7 +102,7 @@ export function LookOptions({ look, setLook, panel }: { look: Look; setLook: (p:
               aria-checked={look.background === b}
               onClick={() => setLook({ background: b })}
               className={cn(
-                "relative w-40 shrink-0 snap-start overflow-hidden rounded-2xl border-[3px] bg-paper text-left shadow-soft transition-[transform,box-shadow,border-color] duration-200 hover:-translate-y-0.5 active:scale-95 md:w-auto",
+                "edge relative w-40 shrink-0 snap-start overflow-hidden rounded-2xl bg-paper text-left shadow-soft transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 active:scale-95 md:w-auto",
                 look.background === b ? selected : "border-transparent",
               )}
             >
