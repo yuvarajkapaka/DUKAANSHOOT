@@ -1,5 +1,6 @@
 "use client";
 import { AnimatePresence, m as motion } from "framer-motion";
+import { enter, rise, tap } from "@/lib/motion";
 import { ArrowRight, Camera, ImageUp, Maximize, RefreshCw, RotateCw, Sun, Layers } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
@@ -108,7 +109,7 @@ function MobileCapture() {
       <main className="mx-auto max-w-3xl px-4 pb-10">
         <AnimatePresence mode="wait">
           {stage === "pick" ? (
-            <motion.div key="pick" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <motion.div key="pick" variants={enter} initial="hidden" animate="show" exit="exit">
               {/* tips */}
               <div className="mt-4 rounded-[var(--radius-card)] bg-night p-4 text-white">
                 <p className="text-[15px] font-semibold text-saffron-300">{t("tipsTitle")}</p>
@@ -118,7 +119,7 @@ function MobileCapture() {
                     { icon: Sun, text: t("tipDaylight") },
                     { icon: Maximize, text: t("tipFill") },
                   ].map(({ icon: Icon, text }, i) => (
-                    <motion.li key={text} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.12 }} className="flex items-center gap-3 text-lg">
+                    <motion.li key={text} variants={enter} initial="hidden" animate="show" custom={0.12 + i * 0.08} className="flex items-center gap-3 text-lg">
                       <span className="flex size-9 items-center justify-center rounded-full bg-white/10">
                         <Icon className="size-5 text-saffron-300" aria-hidden />
                       </span>
@@ -145,14 +146,15 @@ function MobileCapture() {
                   <motion.button
                     key={s.id}
                     type="button"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.05 * i }}
-                    whileTap={{ scale: 0.96 }}
+                    variants={rise}
+                    initial="hidden"
+                    animate="show"
+                    custom={0.2 + 0.05 * i}
+                    whileTap={tap}
                     onClick={() => pickSample(s.id)}
-                    className="overflow-hidden rounded-[var(--radius-card)] bg-paper text-left shadow-soft"
+                    className="group overflow-hidden rounded-[var(--radius-card)] bg-paper text-left shadow-soft transition-shadow duration-300 hover:shadow-warm"
                   >
-                    <Image src={sampleInputUrl(s.id)} alt="" width={300} height={375} className="aspect-[4/3] w-full object-cover" />
+                    <Image src={sampleInputUrl(s.id)} alt="" width={300} height={375} className="aspect-[4/3] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]" />
                     <span className="block px-3 py-2.5 text-[15px] leading-snug font-semibold">{ts(s.nameKey)}</span>
                   </motion.button>
                 ))}
@@ -161,7 +163,7 @@ function MobileCapture() {
           ) : null}
 
           {stage === "crop" && src ? (
-            <motion.div key="crop" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <motion.div key="crop" variants={enter} initial="hidden" animate="show" exit="exit">
               <p className="mt-1 text-ink-soft">{t("cropHint")}</p>
               <div className="relative mt-4 aspect-[4/5] overflow-hidden rounded-[var(--radius-card)] bg-night">
                 <Cropper
@@ -194,7 +196,7 @@ function MobileCapture() {
           ) : null}
 
           {stage === "type" && result ? (
-            <motion.div key="type" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <motion.div key="type" variants={enter} initial="hidden" animate="show" exit="exit">
               <p className="mt-1 text-ink-soft">{t("weThinkHint")}</p>
               <div className="mt-4 flex gap-4">
                 {/* eslint-disable-next-line @next/next/no-img-element */}

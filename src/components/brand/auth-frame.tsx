@@ -30,7 +30,7 @@ export function AuthFrame({ children }: { children: React.ReactNode }) {
         </div>
 
         <GoldRule className="relative mt-8 max-w-sm" diamond={false} />
-        <p className="relative mt-6 max-w-md font-display text-[2.6rem] leading-[1.08] font-semibold text-[#fdf7ee]">{t("tagline")}</p>
+        <p className="relative mt-6 max-w-md font-display text-[2.6rem] leading-[1.08] font-semibold text-ivory">{t("tagline")}</p>
 
         <ul className="relative mt-7 flex flex-wrap gap-x-6 gap-y-2">
           {PROOF.map((p) => (

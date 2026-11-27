@@ -12,8 +12,10 @@ import { useAuthed } from "@/components/providers";
 import { WhatsAppIcon } from "@/components/results/whatsapp-icon";
 import { Button } from "@/components/ui/button";
 import { Counter, PullToRefresh } from "@/components/ui/feedback";
+import { Reveal } from "@/components/ui/reveal";
 import { useCreateStore } from "@/lib/client/create-store";
 import { ensureShop } from "@/lib/client/ensure-shop";
+import { enter, tap } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 // marigold, indigo, teal, butter (same tiles as the market categories)
@@ -57,7 +59,7 @@ export default function SellerDashboard() {
       >
         <main className="mx-auto max-w-6xl px-4 lg:px-6">
           <div className="anim-rise pt-1">
-            <p className="flex items-center gap-2 text-[11px] font-bold tracking-[0.2em] text-gold-deep uppercase">
+            <p className="eyebrow">
               <Zari className="size-2.5" />
               {tn("dashboard")}
             </p>
@@ -65,15 +67,15 @@ export default function SellerDashboard() {
           </div>
 
           {waiting ? (
-            <Link href="/seller/orders" className="anim-rise relative mt-4 flex min-h-14 items-center gap-3 overflow-hidden rounded-full bg-[linear-gradient(120deg,#d42a52,#9b0e32)] px-5 text-white shadow-warm transition-transform hover:-translate-y-0.5">
+            <Link href="/seller/orders" className="anim-rise group relative mt-4 flex min-h-14 items-center gap-3 overflow-hidden rounded-full bg-[linear-gradient(120deg,#d42a52,#9b0e32)] px-5 text-white shadow-warm transition-transform duration-300 hover:-translate-y-0.5 active:scale-[0.99]">
               <span className="relative flex size-3">
-                <span className="absolute inline-flex size-full rounded-full bg-white" style={{ animation: "soft-pulse 1.4s infinite" }} />
+                <span key={waiting} className="anim-ping absolute inline-flex size-full rounded-full bg-white" aria-hidden />
                 <span className="relative inline-flex size-3 rounded-full bg-white" />
               </span>
               <span className="relative flex-1 font-display text-[17px] font-semibold">
                 {waiting} · {t("newOrders")}
               </span>
-              <ArrowRight className="size-5" aria-hidden />
+              <ArrowRight className="size-5 transition-transform duration-300 group-hover:translate-x-1" aria-hidden />
             </Link>
           ) : null}
 
@@ -100,23 +102,27 @@ export default function SellerDashboard() {
           <div className="lg:mt-6 lg:grid lg:grid-flow-dense lg:grid-cols-[minmax(0,1fr)_380px] lg:items-start lg:gap-6">
           <motion.button
             type="button"
-            whileTap={{ scale: 0.97 }}
+            variants={enter}
+            initial="hidden"
+            animate="show"
+            custom={0.2}
+            whileTap={tap}
             onClick={() => {
               reset();
               router.push("/seller/create/capture");
             }}
-            className="panel-night sheen relative mt-5 flex w-full items-center gap-4 overflow-hidden rounded-[var(--radius-lux)] p-5 text-left shadow-warm transition-transform hover:-translate-y-1 lg:col-start-2 lg:mt-0"
+            className="panel-night sheen group relative mt-5 flex w-full items-center gap-4 overflow-hidden rounded-[var(--radius-lux)] p-5 text-left shadow-warm transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-e3)] lg:col-start-2 lg:mt-0"
           >
             <Jaali className="text-gold-light opacity-[0.1]" />
             <RangoliMotif className="spin-slow absolute -top-10 -right-10 size-40 text-gold-light opacity-[0.18]" />
             <Grain />
             <TempleBorder className="absolute inset-x-0 top-0 h-1.5 text-gold opacity-60" />
-            <span className="relative flex size-16 shrink-0 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,#fff3d4,#e9c877_45%,#c08a2e)] shadow-[0_8px_20px_-8px_rgb(0_0_0/0.7)]">
-              <Camera className="size-8 text-[#2b1d05]" aria-hidden />
+            <span className="relative flex size-16 shrink-0 items-center justify-center rounded-2xl bg-foil shadow-[0_8px_20px_-8px_rgb(0_0_0/0.7)] transition-transform duration-300 ease-pop group-hover:-rotate-6 group-hover:scale-105">
+              <Camera className="size-8 text-on-gold" aria-hidden />
             </span>
             <span className="relative">
               <span className="text-foil block font-display text-2xl leading-tight font-semibold">{t("makePhotos")}</span>
-              <span className="text-[15px] font-medium text-[#efe9ff]/75">{t("makePhotosHint")}</span>
+              <span className="text-[15px] font-medium text-mist/75">{t("makePhotosHint")}</span>
             </span>
           </motion.button>
 
@@ -137,17 +143,19 @@ export default function SellerDashboard() {
             ) : !orders.data.length ? (
               <p className="rounded-[var(--radius-lux)] border border-dashed border-gold/40 bg-gold-soft/30 p-6 text-center text-ink-soft">{t("noOrders")}</p>
             ) : (
-              <div className="stagger grid gap-3">
+              <div className="grid gap-3">
                 {orders.data.slice(0, 5).map((o, i) => (
-                  <OrderCard key={o.id} order={o} href={`/seller/orders/${o.id}`} title={o.buyerName} index={i} highlight={lastOrderEvent?.type === "orders" && lastOrderEvent.orderId === o.id && o.status === "new"} />
+                  <Reveal key={o.id} variant="rise" delay={i * 0.05}>
+                    <OrderCard order={o} href={`/seller/orders/${o.id}`} title={o.buyerName} index={i} highlight={lastOrderEvent?.type === "orders" && lastOrderEvent.orderId === o.id && o.status === "new"} />
+                  </Reveal>
                 ))}
               </div>
             )}
           </section>
 
           {s ? (
-            <section className="card-lux mt-6 p-5 lg:col-start-2 lg:mt-0">
-              <p className="flex items-center gap-2 text-[11px] font-bold tracking-[0.2em] text-gold-deep uppercase">
+            <Reveal as="section" delay={0.1} className="card-lux mt-6 p-5 lg:col-start-2 lg:mt-0">
+              <p className="eyebrow">
                 <Zari className="size-2.5" />
                 {t("yourShop")}
               </p>
@@ -167,7 +175,7 @@ export default function SellerDashboard() {
                   </Link>
                 </Button>
               </div>
-            </section>
+            </Reveal>
           ) : null}
           </div>
         </main>

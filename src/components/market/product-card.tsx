@@ -1,9 +1,11 @@
 "use client";
+import { m } from "framer-motion";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef } from "react";
 import { haptic } from "@/lib/client/effects";
+import { gridDelay, inView, rise } from "@/lib/motion";
 import { useMarketState } from "../market-state";
 import type { Product, Shop } from "@/lib/market/types";
 import { cn, rupees } from "@/lib/utils";
@@ -65,7 +67,8 @@ export function ProductCard({ product, shop, index = 0, priority }: { product: P
   const sold = product.status === "soldout" || product.stock <= 0;
   const off = product.mrpPaise && product.mrpPaise > product.pricePaise ? Math.round((1 - product.pricePaise / product.mrpPaise) * 100) : 0;
   return (
-    <article style={{ "--i": index } as React.CSSProperties} className="group relative">
+    // reveals as its row scrolls in; the column sets a small left-to-right delay
+    <m.article {...inView} variants={rise} custom={gridDelay(index)} className="group relative">
       <Link
         href={href}
         onClick={(e) => {
@@ -83,15 +86,15 @@ export function ProductCard({ product, shop, index = 0, priority }: { product: P
         onPointerLeave={endPress}
         onPointerCancel={endPress}
         onContextMenu={(e) => press.current.fired && e.preventDefault()}
-        className="card-lux block p-2.5 transition-[transform,box-shadow] duration-300 select-none active:scale-[0.98] hover:-translate-y-1.5 hover:shadow-warm"
+        className="card-lux block p-2.5 transition-[transform,box-shadow] duration-300 select-none hover:-translate-y-1.5 hover:shadow-warm active:scale-[0.98]"
       >
         <div ref={imgRef} className="relative aspect-[4/5] overflow-hidden rounded-[20px] bg-cream-deep shadow-[inset_0_0_0_1px_var(--hairline)]">
-          <div className="absolute inset-0 transition-transform duration-500 ease-out group-hover:scale-105">
+          <div className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-[1.04]">
             <SmartImage src={product.images[0]} alt={product.title} priority={priority} sizes={CARD_SIZES} className={cn(sold && "grayscale-[60%]")} />
           </div>
           {/* mouse users: the second photo fades in on hover */}
           {product.images[1] ? (
-            <div className="pointer-events-none absolute inset-0 hidden opacity-0 transition-opacity duration-300 group-hover:opacity-100 [@media(hover:hover)]:block">
+            <div className="pointer-events-none absolute inset-0 hidden opacity-0 transition-opacity duration-500 group-hover:opacity-100 [@media(hover:hover)]:block">
               <SmartImage src={product.images[1]} alt="" sizes={CARD_SIZES} />
             </div>
           ) : null}
@@ -111,12 +114,12 @@ export function ProductCard({ product, shop, index = 0, priority }: { product: P
         </div>
       </Link>
       <HeartButton productId={product.id} className="absolute top-3.5 right-3.5" />
-    </article>
+    </m.article>
   );
 }
 
 export function ProductGrid({ children, wide }: { children: React.ReactNode; wide?: boolean }) {
-  return <div className={cn("stagger grid grid-cols-2 gap-3 md:gap-4", wide ? "md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6" : "md:grid-cols-3")}>{children}</div>;
+  return <div className={cn("grid grid-cols-2 gap-3 md:gap-4", wide ? "md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6" : "md:grid-cols-3")}>{children}</div>;
 }
 
 export function ProductGridSkeleton({ n = 6, wide }: { n?: number; wide?: boolean }) {

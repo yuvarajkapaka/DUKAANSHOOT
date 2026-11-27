@@ -1,5 +1,6 @@
 "use client";
 import { AnimatePresence, m as motion } from "framer-motion";
+import { spring } from "@/lib/motion";
 import { Check, ClipboardPaste, Coins, ExternalLink, ImageUp, Rocket, Sparkles, Wand2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
@@ -242,7 +243,7 @@ export function Studio() {
                 <div className="grid grid-cols-2 gap-3">
                   <AnimatePresence>
                     {gen.images.map((im, i) => (
-                      <motion.div key={im.id} initial={{ opacity: 0, scale: 0.9, rotate: i % 2 ? 3 : -3 }} animate={{ opacity: 1, scale: 1, rotate: 0 }} transition={{ delay: i * 0.15, type: "spring", stiffness: 300, damping: 24 }} className="overflow-hidden rounded-xl bg-saffron-50 shadow-soft">
+                      <motion.div key={im.id} initial={{ opacity: 0, scale: 0.9, rotate: i % 2 ? 3 : -3 }} animate={{ opacity: 1, scale: 1, rotate: 0 }} transition={{ ...spring.joy, delay: i * 0.15 }} className="overflow-hidden rounded-xl bg-saffron-50 shadow-soft">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={im.thumb ?? im.url} alt={tr("photoN", { n: i + 1, total: gen.images.length })} className="aspect-[4/5] w-full object-cover" />
                       </motion.div>

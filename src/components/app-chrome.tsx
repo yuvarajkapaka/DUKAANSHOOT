@@ -1,5 +1,5 @@
 "use client";
-import { m as motion } from "framer-motion";
+import { AnimatePresence, m as motion } from "framer-motion";
 import {
   ArrowLeft,
   Bell,
@@ -26,6 +26,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useIsDesktop, useSidebarCollapsed } from "@/lib/client/use-media";
 import { CATEGORIES } from "@/lib/market/types";
+import { DUR, EASE, spring, valueRoll } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import { LogoMark } from "./brand/logo-mark";
 import { Zari } from "./brand/ornaments";
@@ -57,7 +58,7 @@ export function CreditsPill() {
       title={t("photosLeft", { count: profile.credits })}
     >
       <Coins className="size-5 text-gold" aria-hidden />
-      <motion.span key={profile.credits} initial={{ y: -6, opacity: 0 }} animate={{ y: 0, opacity: 1 }}>
+      <motion.span key={profile.credits} {...valueRoll} className="tabular-nums">
         {profile.credits}
       </motion.span>
     </Link>
@@ -135,7 +136,7 @@ export function InstallButton({ className }: { className?: string }) {
   const { available, install } = useInstallPrompt();
   if (!available) return null;
   return (
-    <button type="button" onClick={install} className={cn("panel-night inline-flex min-h-12 shrink-0 items-center gap-2 rounded-full px-4 text-[15px] font-semibold text-[#fdf7ee] shadow-[0_0_0_1px_color-mix(in_oklab,var(--gold)_35%,transparent),var(--shadow-e2)] transition-transform hover:-translate-y-0.5", className)}>
+    <button type="button" onClick={install} className={cn("panel-night inline-flex min-h-12 shrink-0 items-center gap-2 rounded-full px-4 text-[15px] font-semibold text-ivory shadow-[0_0_0_1px_color-mix(in_oklab,var(--gold)_35%,transparent),var(--shadow-e2)] transition-transform hover:-translate-y-0.5", className)}>
       <Download className="size-5" aria-hidden />
       {t("install")}
     </button>
@@ -216,17 +217,26 @@ function CategoriesMenu() {
     <div ref={box} className="relative shrink-0">
       <button type="button" aria-expanded={open} onClick={() => setOpen((o) => !o)} className="inline-flex min-h-12 items-center gap-1 rounded-full px-3 font-semibold transition-colors hover:bg-accent-soft">
         {ts("category")}
-        <ChevronDown className={cn("size-4 transition-transform", open && "rotate-180")} aria-hidden />
+        <ChevronDown className={cn("size-4 transition-transform duration-300", open && "rotate-180")} aria-hidden />
       </button>
-      {open ? (
-        <div className="anim-fade card-lux absolute top-full left-0 z-40 mt-2 grid w-56 gap-1 p-2">
-          {CATEGORIES.map((c) => (
-            <Link key={c} href={`/search?category=${c}`} onClick={() => setOpen(false)} className="flex min-h-11 items-center rounded-xl px-3 font-medium hover:bg-accent-soft">
-              {t(c)}
-            </Link>
-          ))}
-        </div>
-      ) : null}
+      {/* grows out of its trigger (top-left origin), leaves quicker than it came */}
+      <AnimatePresence>
+        {open ? (
+          <motion.div
+            className="card-lux absolute top-full left-0 z-40 mt-2 grid w-60 origin-top-left gap-0.5 p-2"
+            initial={{ opacity: 0, scale: 0.96, y: -4, filter: "blur(4px)" }}
+            animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)", transition: spring.snappy }}
+            exit={{ opacity: 0, scale: 0.98, y: -2, transition: { duration: DUR.micro, ease: EASE.in } }}
+          >
+            {CATEGORIES.map((c) => (
+              <Link key={c} href={`/search?category=${c}`} onClick={() => setOpen(false)} className="group/cat flex min-h-11 items-center gap-3 rounded-xl px-3 font-medium transition-colors hover:bg-accent-soft">
+                <span aria-hidden className={cn(`tile tile-${c}`, "size-5 shrink-0 rounded-md shadow-[0_0_0_1px_var(--hairline)] transition-transform group-hover/cat:scale-110")} />
+                {t(c)}
+              </Link>
+            ))}
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </div>
   );
 }
@@ -400,8 +410,8 @@ export function BottomNav({ side }: { side: "buyer" | "seller" }) {
           return (
             <li key={href}>
               <Link href={href} aria-current={on ? "page" : undefined} className={cn("relative flex min-h-16 flex-col items-center justify-center gap-0.5 text-[12px] leading-tight font-semibold", on ? "text-ink" : "text-ink-soft")}>
-                {on ? <motion.span layoutId={`nav-pill-${side}`} className="absolute top-1.5 h-8 w-14 rounded-full bg-[linear-gradient(135deg,#fff3d4,#e9c877_45%,#c08a2e)] shadow-[0_0_0_1px_color-mix(in_oklab,var(--gold-deep)_45%,transparent),0_6px_14px_-6px_rgb(21_18_46/0.5)]" transition={{ type: "spring", stiffness: 300, damping: 30 }} /> : null}
-                <Icon key={on ? "on" : "off"} className={cn("relative size-6", on && "anim-bounce text-[#2b1d05]")} aria-hidden />
+                {on ? <motion.span layoutId={`nav-pill-${side}`} className="absolute top-1.5 h-8 w-14 rounded-full bg-foil shadow-[0_0_0_1px_color-mix(in_oklab,var(--gold-deep)_45%,transparent),0_6px_14px_-6px_rgb(21_18_46/0.5)]" transition={spring.snappy} /> : null}
+                <Icon key={on ? "on" : "off"} className={cn("relative size-6", on && "anim-settle text-on-gold")} aria-hidden />
                 <span className="relative max-w-full truncate px-0.5">{t(key)}</span>
               </Link>
             </li>
@@ -451,9 +461,9 @@ export function SideNav({ side }: { side: "buyer" | "seller" }) {
               on ? "text-ink" : "text-ink-soft",
             )}
           >
-            {on ? <motion.span layoutId={`rail-pill-${side}`} className="absolute inset-0 rounded-2xl bg-[linear-gradient(135deg,#fff3d4,#e9c877_45%,#c08a2e)] shadow-[0_0_0_1px_color-mix(in_oklab,var(--gold-deep)_45%,transparent),0_8px_18px_-8px_rgb(21_18_46/0.45)]" transition={{ type: "spring", stiffness: 300, damping: 30 }} /> : null}
-            <Icon key={on ? "on" : "off"} className={cn("relative size-6 shrink-0", on && "anim-bounce text-[#2b1d05]")} aria-hidden />
-            {full ? <span className={cn("relative", on && "font-bold text-[#2b1d05]")}>{t(key)}</span> : null}
+            {on ? <motion.span layoutId={`rail-pill-${side}`} className="absolute inset-0 rounded-2xl bg-foil shadow-[0_0_0_1px_color-mix(in_oklab,var(--gold-deep)_45%,transparent),0_8px_18px_-8px_rgb(21_18_46/0.45)]" transition={spring.snappy} /> : null}
+            <Icon key={on ? "on" : "off"} className={cn("relative size-6 shrink-0", on && "anim-settle text-on-gold")} aria-hidden />
+            {full ? <span className={cn("relative", on && "font-bold text-on-gold")}>{t(key)}</span> : null}
           </Link>
         );
       })}

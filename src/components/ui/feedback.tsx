@@ -4,6 +4,7 @@ import { RefreshCw } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { EASE } from "@/lib/motion";
 import { Button } from "./button";
 
 /** Friendly illustration: a hanger with a sparkle. */
@@ -60,7 +61,7 @@ export function Counter({ value, className, format = (n: number) => n.toLocaleSt
   const text = useTransform(mv, (v) => format(Math.round(v)));
   useEffect(() => {
     if (!inView) return;
-    const c = animate(mv, value, { duration: 0.9, ease: [0.2, 0.8, 0.2, 1] });
+    const c = animate(mv, value, { duration: 1.1, ease: EASE.out });
     return () => c.stop();
   }, [inView, value, mv]);
   return (
@@ -105,7 +106,7 @@ export function PullToRefresh({ onRefresh, children }: { onRefresh: () => Promis
           <RefreshCw className={cn("size-5 text-accent-strong", busy && "animate-spin")} />
         </span>
       </div>
-      <div style={{ transform: pull ? `translateY(${pull}px)` : undefined, transition: start.current === null ? "transform .25s ease-out" : undefined }}>{children}</div>
+      <div style={{ transform: pull ? `translateY(${pull}px)` : undefined, transition: start.current === null ? "transform var(--dur-normal) var(--ease-out)" : undefined }}>{children}</div>
     </div>
   );
 }

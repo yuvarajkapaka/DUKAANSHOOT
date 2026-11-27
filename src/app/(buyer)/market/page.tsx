@@ -12,6 +12,7 @@ import { ShopLogo } from "@/components/market/shop-logo";
 import { useSession } from "@/components/providers";
 import { Chip } from "@/components/ui/chip";
 import { EmptyState, ErrorState, PullToRefresh } from "@/components/ui/feedback";
+import { RevealGroup, RevealItem } from "@/components/ui/reveal";
 import { Sheet } from "@/components/ui/sheet";
 import { CATEGORIES } from "@/lib/market/types";
 import { cn } from "@/lib/utils";
@@ -64,8 +65,8 @@ export default function MarketHome() {
             </Link>
           ) : null}
 
-          <div className="pt-1">
-            <p className="flex items-center gap-2 text-[11px] font-bold tracking-[0.2em] text-gold-deep uppercase">
+          <div className="anim-rise pt-1">
+            <p className="eyebrow">
               <Zari className="size-2.5" />
               {tcm("appName")}
             </p>
@@ -94,20 +95,25 @@ export default function MarketHome() {
 
             <div className="relative z-10 flex max-w-[58%] flex-col items-start justify-between gap-4 md:max-w-[52%]">
               <div>
-                <p className="flex items-center gap-2 text-[11px] font-bold tracking-[0.2em] text-gold-light/90 uppercase">
+                <p className="anim-rise eyebrow text-gold-light/90" style={{ animationDelay: "180ms" }}>
                   <Zari className="size-2.5" />
                   {t("shopsNear")}
                 </p>
-                <p className="mt-2.5 font-display text-[2rem] leading-[1.02] font-semibold text-[#fdf7ee] md:text-[3.25rem]">{t("heroTitle")}</p>
-                <GoldRule className="mt-4 max-w-[220px]" diamond={false} />
-                <p className="mt-4 max-w-sm text-[15px] text-[#efe9ff]/75 md:text-lg">{t("heroBody")}</p>
+                <p className="anim-rise mt-2.5 font-display text-[2rem] leading-[1.02] font-semibold text-ivory md:text-[3.25rem]" style={{ animationDelay: "260ms" }}>
+                  {t("heroTitle")}
+                </p>
+                <GoldRule className="anim-draw-x mt-4 max-w-[220px]" diamond={false} style={{ animationDelay: "420ms" }} />
+                <p className="anim-rise mt-4 max-w-sm text-[15px] text-mist/75 md:text-lg" style={{ animationDelay: "480ms" }}>
+                  {t("heroBody")}
+                </p>
               </div>
               <Link
                 href="/search?sort=new"
-                className="sheen group inline-flex min-h-12 items-center gap-2 rounded-full bg-[linear-gradient(135deg,#fff3d4,#e9c877_45%,#c08a2e)] px-5 text-[15px] font-bold text-[#2b1d05] shadow-[0_10px_24px_-10px_rgb(0_0_0/0.7)] transition-transform hover:-translate-y-0.5 active:translate-y-px"
+                style={{ animationDelay: "560ms" }}
+                className="anim-rise sheen group inline-flex min-h-12 items-center gap-2 rounded-full bg-foil px-5 text-[15px] font-bold text-on-gold shadow-[0_10px_24px_-10px_rgb(0_0_0/0.7)] transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_30px_-12px_rgb(0_0_0/0.75)] active:translate-y-px active:scale-[0.98]"
               >
                 {t("shopNow")}
-                <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
+                <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden />
               </Link>
             </div>
 
@@ -117,12 +123,14 @@ export default function MarketHome() {
                   key={id}
                   className={cn(
                     "relative block w-28 shrink-0 md:w-32 lg:w-36",
-                    i % 2 ? "translate-y-4" : "float-slow",
+                    i % 2 && "translate-y-4",
                     i > 0 && "hidden",
                     i === 1 && "md:block",
                     i > 1 && "xl:block",
                   )}
                 >
+                  <span className="anim-rise block" style={{ animationDelay: `${320 + i * 110}ms` }}>
+                  <span className={cn("block", i % 2 === 0 && "float-slow")} style={{ animationDelay: `${-i * 1.7}s` }}>
                   <Image
                     src={`/samples/market/${id}-${(i % 3) + 1}.jpg`}
                     alt=""
@@ -133,6 +141,8 @@ export default function MarketHome() {
                     loading="lazy"
                   />
                   <span className="arch-soft absolute inset-0 bg-[linear-gradient(160deg,rgb(255_255_255/0.24),transparent_40%)]" />
+                  </span>
+                  </span>
                 </span>
               ))}
             </div>
@@ -181,13 +191,13 @@ export default function MarketHome() {
                 ))}
               </div>
             ) : (
-              <div className="no-scrollbar stagger -mx-4 flex gap-3 overflow-x-auto px-4 pt-1 pb-3">
-                {(nearShops.length ? nearShops : shops.data).map((s, i) => (
+              // keyed by city so a new city's shops get their own entrance
+              <RevealGroup key={city ?? "all"} className="no-scrollbar -mx-4 flex gap-3 overflow-x-auto px-4 pt-1 pb-3">
+                {(nearShops.length ? nearShops : shops.data).map((s) => (
+                  <RevealItem key={s.id} className="shrink-0">
                   <Link
-                    key={s.id}
                     href={`/shop/${s.slug}`}
-                    style={{ "--i": i } as React.CSSProperties}
-                    className="card-lux flex w-40 shrink-0 flex-col gap-2 p-3.5 transition-[transform,box-shadow] hover:-translate-y-1 hover:shadow-warm active:scale-[0.97] lg:w-52"
+                    className="card-lux flex w-40 flex-col gap-2 p-3.5 transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-warm active:scale-[0.97] lg:w-52"
                   >
                     <ShopLogo shop={s} size={48} />
                     <span className="line-clamp-1 font-display text-[17px] font-semibold">{s.name}</span>
@@ -196,8 +206,9 @@ export default function MarketHome() {
                       {s.city}
                     </span>
                   </Link>
+                  </RevealItem>
                 ))}
-              </div>
+              </RevealGroup>
             )}
           </section>
 
@@ -208,9 +219,9 @@ export default function MarketHome() {
               eyebrow={t("shopNow")}
               title={t("newArrivals")}
               action={
-                <Link href="/search?sort=new" className="inline-flex min-h-11 items-center gap-1 font-semibold text-accent-strong underline decoration-gold decoration-1 underline-offset-[6px] hover:decoration-2">
+                <Link href="/search?sort=new" className="group inline-flex min-h-11 items-center gap-1 font-semibold text-accent-strong underline decoration-gold decoration-1 underline-offset-[6px] hover:decoration-2">
                   {t("seeAll")}
-                  <ArrowRight className="size-4" aria-hidden />
+                  <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden />
                 </Link>
               }
             />

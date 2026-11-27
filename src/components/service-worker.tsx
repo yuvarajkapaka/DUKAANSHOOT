@@ -10,8 +10,18 @@ const emit = () => listeners.forEach((l) => l());
 /** Registers /sw.js (production only) and captures the Android install prompt. */
 export function ServiceWorker() {
   useEffect(() => {
-    if ("serviceWorker" in navigator && process.env.NODE_ENV === "production") {
-      navigator.serviceWorker.register("/sw.js").catch(() => {});
+    if ("serviceWorker" in navigator) {
+      if (process.env.NODE_ENV === "production") {
+        navigator.serviceWorker.register("/sw.js").catch(() => {});
+      } else {
+        // A worker left behind by a production run on this port would keep serving
+        // dev's un-hashed /_next/static chunks cache-first, so edits never show up
+        // (and every page throws a hydration mismatch). Dev never wants one.
+        void navigator.serviceWorker.getRegistrations().then((regs) => {
+          if (!regs.length) return;
+          void Promise.all(regs.map((r) => r.unregister())).then(() => caches.keys().then((ks) => Promise.all(ks.map((k) => caches.delete(k)))));
+        });
+      }
     }
     const onPrompt = (e: Event) => {
       e.preventDefault();

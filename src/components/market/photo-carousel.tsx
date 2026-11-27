@@ -1,5 +1,6 @@
 "use client";
 import { AnimatePresence, m as motion, type PanInfo } from "framer-motion";
+import { scrim, spring } from "@/lib/motion";
 import { X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { forwardRef, useEffect, useLayoutEffect, useState } from "react";
@@ -83,7 +84,7 @@ export const PhotoCarousel = forwardRef<HTMLDivElement, { images: string[]; alt:
             dragElastic={0.25}
             onDragEnd={onDragEnd}
             animate={{ x: `${-i * 100}%` }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            transition={spring.snappy}
           >
             {images.map((src, n) => (
               <button
@@ -126,7 +127,7 @@ export const PhotoCarousel = forwardRef<HTMLDivElement, { images: string[]; alt:
 
       <AnimatePresence>
         {full ? (
-          <motion.div className="fixed inset-0 z-[60] flex flex-col bg-night" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} role="dialog" aria-modal="true" aria-label={alt}>
+          <motion.div className="fixed inset-0 z-[60] flex flex-col bg-night" variants={scrim} initial="hidden" animate="show" exit="exit" role="dialog" aria-modal="true" aria-label={alt}>
             <div className="safe-top flex items-center justify-between px-3 text-white">
               <span className="pl-2 font-semibold">{t("photo", { n: i + 1, total: images.length })}</span>
               <button type="button" onClick={() => setFull(false)} className="inline-flex min-h-12 items-center gap-1 rounded-full px-3 font-semibold">

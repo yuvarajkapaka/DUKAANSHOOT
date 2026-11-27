@@ -1,5 +1,6 @@
 "use client";
 import { AnimatePresence, m as motion } from "framer-motion";
+import { EASE, iconSwap } from "@/lib/motion";
 import { Check, Coins, Mic, Sparkles, Wand2 } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
@@ -113,11 +114,11 @@ export default function LookPage() {
           <Button variant="dark" onClick={doQuickPick} className="relative px-3 whitespace-nowrap">
             <AnimatePresence mode="wait" initial={false}>
               {picked ? (
-                <motion.span key="ok" initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}>
+                <motion.span key="ok" {...iconSwap}>
                   <Check aria-hidden />
                 </motion.span>
               ) : (
-                <motion.span key="wand" initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}>
+                <motion.span key="wand" {...iconSwap}>
                   <Wand2 aria-hidden />
                 </motion.span>
               )}
@@ -162,9 +163,10 @@ export default function LookPage() {
       <Sheet open={listening} onOpenChange={(o) => !o && stopRef.current()} title={t("listening")}>
         <div className="flex flex-col items-center gap-4 pb-8">
           <motion.span
-            className="flex size-28 items-center justify-center rounded-full bg-[linear-gradient(135deg,#fff3d4,#e9c877_45%,#c08a2e)] shadow-[0_0_0_1px_color-mix(in_oklab,var(--gold-deep)_45%,transparent),0_18px_36px_-14px_rgb(21_18_46/0.55)]"
-            animate={{ scale: [1, 1.12, 1] }}
-            transition={{ repeat: Infinity, duration: 1.2 }}
+            className="flex size-28 items-center justify-center rounded-full bg-foil shadow-[0_0_0_1px_color-mix(in_oklab,var(--gold-deep)_45%,transparent),0_18px_36px_-14px_rgb(21_18_46/0.55)]"
+            // functional, not decorative: it breathes only while the mic is actually listening
+            animate={{ scale: [1, 1.08, 1] }}
+            transition={{ repeat: Infinity, duration: 1.4, ease: EASE.inOut }}
           >
             <Mic className="size-12 text-ink" aria-hidden />
           </motion.span>

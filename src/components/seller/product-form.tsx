@@ -1,5 +1,6 @@
 "use client";
 import { AnimatePresence, m as motion } from "framer-motion";
+import { enter, pop, valueRoll } from "@/lib/motion";
 import { Check, EyeOff, ImagePlus, Minus, PackageX, Plus, RotateCcw, Rocket, Save, Share2, Store, Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
@@ -40,10 +41,10 @@ function FirstProduct({ shop, productId }: { shop: Shop; productId: string }) {
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-cream px-6 text-center" role="dialog" aria-modal="true" aria-label={t("firstTitle")}>
       <PartyArt />
-      <motion.h1 initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="mt-4 font-display text-3xl">
+      <motion.h1 variants={enter} initial="hidden" animate="show" custom={0.4} className="mt-4 font-display text-3xl">
         {t("firstTitle")}
       </motion.h1>
-      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="mt-2 max-w-xs text-lg text-ink-soft">
+      <motion.p variants={enter} initial="hidden" animate="show" custom={0.52} className="mt-2 max-w-xs text-lg text-ink-soft">
         {t("firstBody")}
       </motion.p>
       <div className="mt-8 grid w-full max-w-sm gap-3">
@@ -199,7 +200,7 @@ export function ProductForm({ generationId, product }: { generationId?: string; 
                   <SmartImage src={c.url} alt="" sizes="160px" />
                   <AnimatePresence>
                     {n >= 0 ? (
-                      <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }} className="absolute top-1.5 right-1.5 flex size-7 items-center justify-center rounded-full bg-accent text-sm font-bold text-on-accent">
+                      <motion.span variants={pop} initial="hidden" animate="show" exit="exit" className="absolute top-1.5 right-1.5 flex size-7 items-center justify-center rounded-full bg-accent text-sm font-bold text-on-accent">
                         {n + 1}
                       </motion.span>
                     ) : null}
@@ -263,7 +264,7 @@ export function ProductForm({ generationId, product }: { generationId?: string; 
               <button type="button" onClick={() => setStock((s) => Math.max(0, s - 1))} className="flex size-12 items-center justify-center" aria-label="−1">
                 <Minus className="size-5" aria-hidden />
               </button>
-              <motion.span key={stock} initial={{ y: -6, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="w-12 text-center font-display text-xl font-bold" aria-live="polite">
+              <motion.span key={stock} {...valueRoll} className="w-12 text-center font-display text-xl font-bold tabular-nums" aria-live="polite">
                 {stock}
               </motion.span>
               <button type="button" onClick={() => setStock((s) => Math.min(999, s + 1))} className="flex size-12 items-center justify-center" aria-label="+1">

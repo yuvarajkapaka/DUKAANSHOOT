@@ -4,6 +4,7 @@ import { AnimatePresence, m as motion, useDragControls, type PanInfo } from "fra
 import { X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useMedia } from "@/lib/client/use-media";
+import { DUR, EASE, dialog as motionDialog, scrim, spring } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 /**
@@ -31,16 +32,28 @@ export function Sheet({
   const onDragEnd = (_: unknown, info: PanInfo) => {
     if (info.offset.y > 110 || info.velocity.y > 600) onOpenChange(false);
   };
+  // tablet/desktop: the dialog comes into focus; phones: the sheet rises on a no-overshoot spring
+  // and leaves faster than it came (the user has already moved on)
   const motionProps = dialog
-    ? { initial: { opacity: 0, scale: 0.95, y: 12 }, animate: { opacity: 1, scale: 1, y: 0 }, exit: { opacity: 0, scale: 0.96, y: 8 } }
-    : { initial: { y: "100%" }, animate: { y: 0 }, exit: { y: "100%" }, drag: "y" as const, dragControls: drag, dragListener: false, dragConstraints: { top: 0, bottom: 0 }, dragElastic: { top: 0, bottom: 0.7 }, onDragEnd };
+    ? { variants: motionDialog, initial: "hidden", animate: "show", exit: "exit" }
+    : {
+        initial: { y: "100%" },
+        animate: { y: 0, transition: spring.snappy },
+        exit: { y: "100%", transition: { duration: DUR.normal, ease: EASE.in } },
+        drag: "y" as const,
+        dragControls: drag,
+        dragListener: false,
+        dragConstraints: { top: 0, bottom: 0 },
+        dragElastic: { top: 0, bottom: 0.7 },
+        onDragEnd,
+      };
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <AnimatePresence>
         {open ? (
           <Dialog.Portal forceMount>
             <Dialog.Overlay asChild forceMount>
-              <motion.div className="fixed inset-0 z-50 bg-night/55" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} />
+              <motion.div className="fixed inset-0 z-50 bg-night/55" variants={scrim} initial="hidden" animate="show" exit="exit" />
             </Dialog.Overlay>
             <Dialog.Content asChild forceMount>
               <motion.div
@@ -51,7 +64,6 @@ export function Sheet({
                     : "inset-x-0 bottom-0 max-h-[92dvh] w-full rounded-t-[28px] px-4 pt-2",
                   className,
                 )}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 {...motionProps}
               >
                 {!dialog ? (
@@ -64,8 +76,8 @@ export function Sheet({
                     <Dialog.Title className="font-display text-xl">{title}</Dialog.Title>
                     {description ? <Dialog.Description className="mt-1 text-ink-soft">{description}</Dialog.Description> : <Dialog.Description className="sr-only">{title}</Dialog.Description>}
                   </div>
-                  <Dialog.Close className="inline-flex size-12 shrink-0 items-center justify-center rounded-full bg-paper shadow-soft transition-colors hover:bg-accent-soft" aria-label={t("close")}>
-                    <X className="size-6" aria-hidden />
+                  <Dialog.Close className="group inline-flex size-12 shrink-0 items-center justify-center rounded-full bg-paper shadow-soft transition-[background-color,transform] hover:bg-accent-soft active:scale-95" aria-label={t("close")}>
+                    <X className="size-6 transition-transform duration-300 group-hover:rotate-90" aria-hidden />
                   </Dialog.Close>
                 </div>
                 {children}

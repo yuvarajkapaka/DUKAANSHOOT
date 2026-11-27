@@ -2,6 +2,7 @@
 import { AnimatePresence, m as motion } from "framer-motion";
 import { Check } from "lucide-react";
 import { haptic } from "@/lib/client/effects";
+import { iconSwap } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 /** Big, round choice chip. Selected = an indigo night face with a brass hairline + a checkmark pops in. */
@@ -32,7 +33,7 @@ export function Chip({
       className={cn(
         "inline-flex min-h-12 items-center gap-2 rounded-full px-4 text-[15px] font-semibold transition-[transform,background-color,color,box-shadow] duration-200 active:scale-95",
         selected
-          ? "panel-night text-[#fdf7ee] shadow-[0_0_0_1px_color-mix(in_oklab,var(--gold)_45%,transparent),0_8px_18px_-8px_rgb(21_18_46/0.5)]"
+          ? "panel-night text-ivory shadow-[0_0_0_1px_color-mix(in_oklab,var(--gold)_45%,transparent),0_8px_18px_-8px_rgb(21_18_46/0.5)]"
           : "edge bg-paper text-ink shadow-soft hover:-translate-y-0.5 hover:bg-cream-deep",
         className,
       )}
@@ -40,7 +41,7 @@ export function Chip({
       {swatch ? <span className="size-6 rounded-full border-2 border-white/70 shadow-sm" style={{ background: swatch }} aria-hidden /> : null}
       <AnimatePresence initial={false}>
         {selected && !swatch ? (
-          <motion.span initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0, opacity: 0 }} transition={{ type: "spring", stiffness: 500, damping: 25 }}>
+          <motion.span {...iconSwap}>
             <Check className="size-5" strokeWidth={3} aria-hidden />
           </motion.span>
         ) : null}

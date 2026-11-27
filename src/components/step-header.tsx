@@ -12,7 +12,7 @@ export function StepHeader({ step, title }: { step: 1 | 2 | 3; title: string }) 
           <span key={n} className={cn("h-1.5 flex-1 rounded-full transition-all duration-500", n <= step ? "bg-[linear-gradient(90deg,var(--gold-light),var(--gold))] shadow-[0_0_12px_-2px_color-mix(in_oklab,var(--gold)_70%,transparent)]" : "bg-line")} />
         ))}
       </div>
-      <p className="mt-3 flex items-center gap-2 text-[11px] font-bold tracking-[0.2em] text-gold-deep uppercase">
+      <p className="eyebrow mt-3">
         <Zari className="size-2.5" />
         {t("step", { n: step })}
       </p>

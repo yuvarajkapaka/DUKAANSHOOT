@@ -1,5 +1,7 @@
 "use client";
 import { AnimatePresence, m as motion } from "framer-motion";
+import { Zari } from "@/components/brand/ornaments";
+import { EASE, enter } from "@/lib/motion";
 import { WifiOff } from "lucide-react";
 import { useTranslations } from "next-intl";
 
@@ -33,7 +35,7 @@ export function ProgressView({ progress, slow, thumb }: { progress: number; slow
             strokeLinecap="round"
             strokeDasharray={C}
             animate={{ strokeDashoffset: C * (1 - p / 100) }}
-            transition={{ type: "spring", stiffness: 50, damping: 18 }}
+            transition={{ type: "spring", duration: 1.2, bounce: 0 }}
           />
           <defs>
             <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
@@ -46,7 +48,7 @@ export function ProgressView({ progress, slow, thumb }: { progress: number; slow
         <motion.div
           className="relative h-44 w-36 overflow-hidden rounded-2xl border-4 border-white bg-paper shadow-2xl"
           animate={{ y: [0, -8, 0], rotate: [-1.5, 1.5, -1.5] }}
-          transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 3.2, repeat: Infinity, ease: EASE.inOut }}
         >
           {thumb ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -57,13 +59,13 @@ export function ProgressView({ progress, slow, thumb }: { progress: number; slow
             className="absolute inset-x-0 h-16 bg-gradient-to-b from-transparent via-white/80 to-transparent mix-blend-overlay"
             initial={{ y: "-100%" }}
             animate={{ y: ["-100%", "320%"] }}
-            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: EASE.inOut }}
           />
           <motion.span
             className="absolute inset-x-0 h-0.5 bg-saffron-300 shadow-[0_0_12px_4px_rgba(244,182,106,.8)]"
             initial={{ y: 0 }}
             animate={{ y: [0, 176, 0] }}
-            transition={{ duration: 3.6, repeat: Infinity, ease: "easeInOut" }}
+            transition={{ duration: 3.6, repeat: Infinity, ease: EASE.inOut }}
           />
         </motion.div>
         {/* sparkles */}
@@ -75,13 +77,13 @@ export function ProgressView({ progress, slow, thumb }: { progress: number; slow
         ].map(([x, y, d], i) => (
           <motion.span
             key={i}
-            className="absolute text-xl"
+            className="absolute text-gold"
             style={{ left: x, top: y }}
-            animate={{ scale: [0, 1.2, 0], rotate: [0, 90, 180], opacity: [0, 1, 0] }}
-            transition={{ duration: 2, repeat: Infinity, delay: d }}
+            animate={{ scale: [0.4, 1, 0.4], rotate: [0, 90, 180], opacity: [0, 1, 0] }}
+            transition={{ duration: 2, repeat: Infinity, delay: d, ease: EASE.inOut }}
             aria-hidden
           >
-            ✨
+            <Zari className="size-5" />
           </motion.span>
         ))}
       </div>
@@ -89,7 +91,7 @@ export function ProgressView({ progress, slow, thumb }: { progress: number; slow
       <p className="mt-2 font-display text-4xl font-bold text-accent-strong tabular-nums">{p}%</p>
       <div className="h-16">
         <AnimatePresence mode="wait">
-          <motion.p key={step} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.25 }} className="mt-1 font-display text-xl">
+          <motion.p key={step} variants={enter} initial="hidden" animate="show" exit="exit" className="mt-1 font-display text-xl">
             {t(`progress${step}` as "progress1")}
           </motion.p>
         </AnimatePresence>

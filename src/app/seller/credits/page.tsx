@@ -1,5 +1,7 @@
 "use client";
 import { m as motion } from "framer-motion";
+import { Grain, Jaali, TempleBorder, Zari } from "@/components/brand/ornaments";
+import { pop, rise } from "@/lib/motion";
 import { ChevronRight, Coins, History, ShieldCheck, Smartphone, XCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
@@ -125,14 +127,22 @@ export default function CreditsPage() {
       <AppHeader side="seller" back="/seller/shop" />
       <main className="mx-auto max-w-5xl px-4 lg:px-6">
         <div className="flex items-center gap-2">
-          <h1 className="text-2xl font-bold">{t("title")}</h1>
+          <h1 className="font-display text-2xl md:text-3xl">{t("title")}</h1>
           {config.demoMode ? <DemoBadge /> : null}
         </div>
 
-        <motion.div initial={{ scale: 0.96, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="mt-4 rounded-[var(--radius-card)] bg-night p-5 text-white shadow-soft">
-          <p className="text-saffron-200">{t("balance")}</p>
-          <p className="mt-1 flex items-center gap-2 text-3xl font-extrabold">
-            <Coins className="size-9 text-saffron-400" aria-hidden />
+        <motion.div variants={pop} initial="hidden" animate="show" className="panel-night sheen mt-4 rounded-[var(--radius-lux)] p-6 shadow-warm">
+          <Jaali className="text-gold-light opacity-[0.08]" />
+          <Grain />
+          <TempleBorder className="absolute inset-x-0 top-0 h-1.5 text-gold opacity-60" />
+          <p className="eyebrow relative text-gold-light/90">
+            <Zari className="size-2.5" />
+            {t("balance")}
+          </p>
+          <p className="relative mt-2 flex items-center gap-3 font-display text-3xl font-semibold text-ivory md:text-4xl">
+            <span className="flex size-12 items-center justify-center rounded-2xl bg-foil shadow-[0_8px_20px_-8px_rgb(0_0_0/0.7)]">
+              <Coins className="size-7 text-on-gold" aria-hidden />
+            </span>
             {tc("photosLeft", { count: profile.credits })}
           </p>
         </motion.div>
@@ -148,13 +158,14 @@ export default function CreditsPage() {
           {config.packs.map((pack, i) => (
             <motion.div
               key={pack.id}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.06 }}
-              className={cn("card-lux relative p-5", pack.tag === "popular" && "ring-2 ring-gold ring-offset-2 ring-offset-cream")}
+              variants={rise}
+              initial="hidden"
+              animate="show"
+              custom={0.12 + i * 0.07}
+              className={cn("card-lux relative p-5 transition-shadow duration-300 hover:shadow-warm", pack.tag === "popular" && "ring-2 ring-gold ring-offset-2 ring-offset-cream")}
             >
               {pack.tag ? (
-                <span className="absolute -top-3 left-5 rounded-full bg-[linear-gradient(135deg,#fff3d4,#e9c877_45%,#c08a2e)] px-3 py-1 text-[11px] font-bold tracking-[0.12em] text-[#2b1d05] uppercase shadow-[0_0_0_1px_color-mix(in_oklab,var(--gold-deep)_45%,transparent),0_6px_14px_-6px_rgb(21_18_46/0.45)]">{pack.tag === "popular" ? t("popular") : t("best")}</span>
+                <span className="absolute -top-3 left-5 rounded-full bg-foil px-3 py-1 text-[11px] font-bold tracking-[0.12em] text-on-gold uppercase shadow-[0_0_0_1px_color-mix(in_oklab,var(--gold-deep)_45%,transparent),0_6px_14px_-6px_rgb(21_18_46/0.45)]">{pack.tag === "popular" ? t("popular") : t("best")}</span>
               ) : null}
               <div className="grid gap-3">
                 <div className="flex items-baseline justify-between gap-2 pt-1">

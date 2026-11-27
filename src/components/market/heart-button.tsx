@@ -4,6 +4,7 @@ import { Heart } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { haptic } from "@/lib/client/effects";
+import { DUR, EASE, spring } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import { useMarketState } from "../market-state";
 
@@ -28,14 +29,14 @@ export function HeartButton({ productId, className, size = "md" }: { productId: 
         if (r) setBurst((b) => b + 1);
       }}
       className={cn(
-        "glass-paper relative flex items-center justify-center rounded-full shadow-[0_0_0_1px_var(--hairline),0_6px_16px_-8px_rgb(21_18_46/0.5)] transition-[transform,background-color] active:scale-90",
-        on ? "bg-[#E11D48]" : "bg-white",
+        "glass-paper relative flex items-center justify-center rounded-full shadow-[0_0_0_1px_var(--hairline),0_6px_16px_-8px_rgb(21_18_46/0.5)] transition-[transform,background-color] duration-300 hover:scale-105 active:scale-90",
+        on ? "bg-rose" : "bg-white",
         size === "lg" ? "size-14" : "size-12",
         className,
       )}
     >
-      <motion.span key={`h${burst}`} initial={burst ? { scale: 0.4 } : false} animate={{ scale: [0.4, 1.3, 1] }} transition={{ duration: 0.35 }}>
-        <Heart className={cn(size === "lg" ? "size-7" : "size-6", on ? "fill-white text-white" : "text-[#1E1B4B]")} aria-hidden />
+      <motion.span key={`h${burst}`} initial={burst ? { scale: 0.6 } : false} animate={{ scale: 1 }} transition={spring.joy}>
+        <Heart className={cn(size === "lg" ? "size-7" : "size-6", on ? "fill-white text-white" : "text-night")} aria-hidden />
       </motion.span>
       <AnimatePresence>
         {burst ? (
@@ -47,7 +48,7 @@ export function HeartButton({ productId, className, size = "md" }: { productId: 
                 style={{ background: i % 2 ? "#E11D48" : "#FB923C" }}
                 initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
                 animate={{ x: Math.cos(a) * 26, y: Math.sin(a) * 26, opacity: 0, scale: 0.4 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
+                transition={{ duration: DUR.slow, ease: EASE.out }}
               />
             ))}
           </span>

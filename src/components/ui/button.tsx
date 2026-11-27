@@ -23,8 +23,8 @@ const buttonVariants = cva(
         marigold:
           "bg-[linear-gradient(180deg,#f3a74a,#e8871e)] text-[#2a1a05] shadow-[0_0_0_1px_rgb(176_98_14/0.7),inset_0_1px_0_rgb(255_255_255/0.4),var(--shadow-lift)] hover:-translate-y-0.5",
         foil:
-          "sheen bg-[linear-gradient(135deg,#fff3d4,#e9c877_45%,#c08a2e)] text-[#2b1d05] shadow-[0_0_0_1px_color-mix(in_oklab,var(--gold-deep)_55%,transparent),inset_0_1px_0_rgb(255_255_255/0.6),var(--shadow-lift)] hover:-translate-y-0.5",
-        dark: "panel-night text-[#fdf7ee] shadow-[0_0_0_1px_color-mix(in_oklab,var(--gold)_35%,transparent),var(--shadow-lift)] hover:-translate-y-0.5 dark:bg-paper dark:text-ink",
+          "sheen bg-foil text-on-gold shadow-[0_0_0_1px_color-mix(in_oklab,var(--gold-deep)_55%,transparent),inset_0_1px_0_rgb(255_255_255/0.6),var(--shadow-lift)] hover:-translate-y-0.5",
+        dark: "panel-night text-ivory shadow-[0_0_0_1px_color-mix(in_oklab,var(--gold)_35%,transparent),var(--shadow-lift)] hover:-translate-y-0.5 dark:bg-paper dark:text-ink",
         outline: "edge bg-paper text-ink shadow-soft hover:-translate-y-0.5 hover:bg-cream-deep",
         ghost: "text-ink hover:bg-accent-soft active:bg-accent-soft",
         soft: "edge-gold bg-accent-soft text-accent-strong hover:brightness-[0.97]",

@@ -1,5 +1,6 @@
 "use client";
 import { AnimatePresence, m as motion } from "framer-motion";
+import { ease, enter, scrim, spring } from "@/lib/motion";
 import { Share2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
@@ -27,10 +28,14 @@ function FirstSale({ onClose }: { onClose: () => void }) {
   const t = useTranslations("sellerOrders");
   useCelebrate();
   return (
-    <motion.div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-cream/97 px-6 text-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} role="dialog" aria-modal="true" aria-label={t("firstSaleTitle")}>
+    <motion.div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-cream/97 px-6 text-center" variants={scrim} initial="hidden" animate="show" exit="exit" role="dialog" aria-modal="true" aria-label={t("firstSaleTitle")}>
       <PartyArt />
-      <h1 className="mt-4 font-display text-3xl">{t("firstSaleTitle")}</h1>
-      <p className="mt-2 max-w-xs text-lg text-ink-soft">{t("firstSaleBody")}</p>
+      <motion.h1 variants={enter} initial="hidden" animate="show" custom={0.4} className="mt-4 font-display text-3xl">
+        {t("firstSaleTitle")}
+      </motion.h1>
+      <motion.p variants={enter} initial="hidden" animate="show" custom={0.52} className="mt-2 max-w-xs text-lg text-ink-soft">
+        {t("firstSaleBody")}
+      </motion.p>
       <Button size="lg" className="mt-8" onClick={onClose}>
         {t("accept")} →
       </Button>
@@ -117,10 +122,11 @@ export default function SellerOrdersPage() {
                   <motion.li
                     key={o.id}
                     layout
-                    initial={fresh.has(o.id) ? { opacity: 0, y: -60, scale: 0.96 } : false}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, x: 60 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    // a fresh order drops in from above; a handled one slides out quietly
+                    initial={fresh.has(o.id) ? { opacity: 0, y: -48, scale: 0.97, filter: "blur(4px)" } : false}
+                    animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+                    exit={{ opacity: 0, x: 32, transition: ease.exit }}
+                    transition={spring.soft}
                     className="relative"
                   >
                     {fresh.has(o.id) && o.status === "new" ? (

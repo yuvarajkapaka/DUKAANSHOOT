@@ -1,5 +1,6 @@
 "use client";
 import { AnimatePresence, m as motion } from "framer-motion";
+import { ease, rise, spring, valueRoll } from "@/lib/motion";
 import { ArrowRight, Minus, Plus, Search, Store, Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
@@ -50,7 +51,7 @@ export default function CartPage() {
             <p className="mb-3 text-[15px] text-ink-soft">{t("separate")}</p>
             <AnimatePresence initial={false}>
               {groups.map((g) => (
-                <motion.section key={g.shop.id} layout initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95 }} className="mb-4 rounded-[var(--radius-card)] bg-paper p-3 shadow-soft">
+                <motion.section key={g.shop.id} layout variants={rise} initial="hidden" animate="show" exit={{ opacity: 0, scale: 0.97, transition: ease.exit }} transition={spring.snappy} className="card-lux mb-4 p-3">
                   <h2 className="mb-2 flex items-center gap-2 px-1 text-lg">
                     <Store className="size-5 text-accent-strong" aria-hidden />
                     {t("fromShop", { shop: g.shop.name })}
@@ -58,7 +59,7 @@ export default function CartPage() {
                   <ul className="divide-y divide-line">
                     <AnimatePresence initial={false}>
                       {g.lines.map(({ item, product }) => (
-                        <motion.li key={item.id} layout exit={{ opacity: 0, x: -40 }} className="flex gap-3 py-3">
+                        <motion.li key={item.id} layout exit={{ opacity: 0, x: -24, transition: ease.exit }} transition={spring.snappy} className="flex gap-3 py-3">
                           <Link href={`/product/${product.id}`} className="relative aspect-[4/5] w-20 shrink-0 overflow-hidden rounded-xl bg-saffron-50">
                             <SmartImage src={product.images[0]} alt="" sizes="80px" />
                           </Link>
@@ -71,7 +72,7 @@ export default function CartPage() {
                                 <button type="button" className="flex size-11 items-center justify-center disabled:opacity-40" disabled={item.qty <= 1} onClick={() => updateCart(item.id, item.qty - 1)} aria-label="−1">
                                   <Minus className="size-5" aria-hidden />
                                 </button>
-                                <motion.span key={item.qty} initial={{ y: -6, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="w-6 text-center font-bold" aria-live="polite">
+                                <motion.span key={item.qty} {...valueRoll} className="w-6 text-center font-display font-bold tabular-nums" aria-live="polite">
                                   {item.qty}
                                 </motion.span>
                                 <button type="button" className="flex size-11 items-center justify-center disabled:opacity-40" disabled={item.qty >= Math.min(10, product.stock)} onClick={() => updateCart(item.id, item.qty + 1)} aria-label="+1">

@@ -1,5 +1,6 @@
 "use client";
 import { m as motion } from "framer-motion";
+import { enter } from "@/lib/motion";
 import { Banknote, CreditCard, Home, ListChecks, Lock, Store } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
@@ -24,13 +25,13 @@ function Placed({ orders }: { orders: Order[] }) {
   return (
     <main className="mx-auto flex min-h-[70dvh] max-w-md flex-col items-center justify-center px-6 text-center">
       <DrawnCheck />
-      <motion.h1 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="mt-4 font-display text-3xl">
+      <motion.h1 variants={enter} initial="hidden" animate="show" custom={0.6} className="mt-4 font-display text-3xl">
         {t("placedTitle")}
       </motion.h1>
-      <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.75 }} className="mt-2 text-xl font-semibold text-accent-strong">
+      <motion.p variants={enter} initial="hidden" animate="show" custom={0.72} className="mt-2 text-xl font-semibold text-accent-strong">
         {orders.length === 1 ? t("placedTo", { shop: orders[0].shopName }) : t("placedToMany", { n: orders.length })}
       </motion.p>
-      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 }} className="mt-2 text-ink-soft">
+      <motion.p variants={enter} initial="hidden" animate="show" custom={0.84} className="mt-2 text-ink-soft">
         {t("placedBody")}
       </motion.p>
       <div className="mt-8 grid w-full gap-3">

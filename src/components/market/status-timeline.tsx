@@ -1,5 +1,6 @@
 "use client";
 import { m as motion } from "framer-motion";
+import { DUR, EASE, spring } from "@/lib/motion";
 import { Check, Package, PackageCheck, ShoppingBag, Store, Truck, XCircle } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { timelineSteps, type Order, type OrderStatus } from "@/lib/market/types";
@@ -42,17 +43,23 @@ export function StatusTimeline({ order }: { order: Order }) {
                   style={{ height: "100%" }}
                   initial={{ scaleY: 0 }}
                   animate={{ scaleY: i < reached ? 1 : 0 }}
-                  transition={{ duration: 0.4, delay: 0.15 + i * 0.35, ease: "easeInOut" }}
+                  transition={{ duration: DUR.big, delay: 0.15 + i * 0.3, ease: EASE.inOut }}
                 />
               </span>
             ) : null}
             <span className="relative flex size-12 shrink-0 items-center justify-center">
-              {current ? <span className="absolute inset-0 rounded-full bg-accent/30" style={{ animation: "soft-pulse 1.6s ease-in-out infinite" }} aria-hidden /> : null}
+              {/* where the order is now: a soft halo, and three rings when the step is first shown */}
+              {current ? (
+                <>
+                  <span className="absolute -inset-1 rounded-full bg-accent/15" aria-hidden />
+                  <span className="anim-ping absolute inset-0 rounded-full bg-accent/35" style={{ animationDelay: `${i * 0.3 + 0.4}s` }} aria-hidden />
+                </>
+              ) : null}
               <motion.span
                 className={cn("relative flex size-12 items-center justify-center rounded-full border-2", done ? "border-accent bg-accent text-on-accent" : "border-line bg-paper text-ink-soft")}
-                initial={{ scale: 0.6, opacity: 0 }}
+                initial={{ scale: 0.7, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20, delay: i * 0.35 }}
+                transition={{ ...spring.pop, delay: i * 0.3 }}
               >
                 <Icon className="size-5" aria-hidden />
               </motion.span>

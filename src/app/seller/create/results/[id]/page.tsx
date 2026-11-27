@@ -1,5 +1,6 @@
 "use client";
 import { m as motion } from "framer-motion";
+import { EASE, enter, expand, spring } from "@/lib/motion";
 import { AlertTriangle, Camera, Download, Info, Loader2, RefreshCw, Rocket, Type } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
@@ -248,7 +249,7 @@ export default function ResultsPage() {
       ) : (
         <main className="mx-auto max-w-6xl px-4 pb-40 lg:px-6">
           {justDone ? (
-            <motion.p initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="mt-2 font-display text-2xl">
+            <motion.p variants={enter} initial="hidden" animate="show" className="mt-2 font-display text-2xl">
               {t("ready")} ✨
             </motion.p>
           ) : null}
@@ -272,7 +273,7 @@ export default function ResultsPage() {
                 type="button"
                 initial={justDone ? { opacity: 0, scale: 0.9, rotate: i % 2 ? 3 : -3 } : { opacity: 0, scale: 0.96 }}
                 animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                transition={{ delay: (justDone ? 0.15 : 0) + i * (justDone ? 0.18 : 0.06), type: "spring", stiffness: 300, damping: 24 }}
+                transition={{ ...(justDone ? spring.joy : spring.soft), delay: (justDone ? 0.15 : 0) + i * (justDone ? 0.18 : 0.06) }}
                 onClick={() => setViewer(i)}
                 className={cn("relative overflow-hidden bg-paper shadow-soft", justDone ? "rounded-md p-1.5 pb-5" : "rounded-[var(--radius-card)]")}
                 aria-label={t("photoN", { n: i + 1, total: shownImages.length })}
@@ -282,7 +283,7 @@ export default function ResultsPage() {
                   <img src={im.url} alt="" className="aspect-[4/5] w-full object-cover" decoding="async" />
                   {justDone ? (
                     // Polaroid "developing": a blurred, washed-out copy fades away (opacity only)
-                    <motion.span className="absolute inset-0" initial={{ opacity: 1 }} animate={{ opacity: 0 }} transition={{ delay: 0.4 + i * 0.18, duration: 1.1, ease: "easeOut" }} aria-hidden>
+                    <motion.span className="absolute inset-0" initial={{ opacity: 1 }} animate={{ opacity: 0 }} transition={{ delay: 0.4 + i * 0.18, duration: 1.1, ease: EASE.out }} aria-hidden>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={im.url} alt="" className="size-full scale-110 object-cover blur-md brightness-125 saturate-50" />
                     </motion.span>
@@ -321,7 +322,7 @@ export default function ResultsPage() {
               </span>
             </label>
             {overlayOn ? (
-              <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} className="mt-3 grid gap-3 overflow-hidden">
+              <motion.div {...expand} className="mt-3 grid gap-3 overflow-hidden">
                 {(
                   [
                     ["shopName", t("shopName"), "text", ""],

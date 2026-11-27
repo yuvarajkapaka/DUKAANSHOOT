@@ -1,5 +1,6 @@
 "use client";
 import { m as motion } from "framer-motion";
+import { gridDelay, inView, rise } from "@/lib/motion";
 import { AlertCircle, Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
@@ -10,7 +11,7 @@ export function GenerationCard({ gen, index }: { gen: Generation; index: number 
   const t = useTranslations("garment");
   const cover = gen.images[0]?.thumb ?? gen.images[0]?.url;
   return (
-    <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: Math.min(index, 8) * 0.04 }}>
+    <motion.div {...inView} variants={rise} custom={gridDelay(index)}>
       <Link href={`/seller/create/results/${gen.id}`} className="group block overflow-hidden rounded-[var(--radius-card)] bg-paper shadow-soft">
         <div className="relative aspect-[4/5] bg-saffron-50">
           {cover ? (

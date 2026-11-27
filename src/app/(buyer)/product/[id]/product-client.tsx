@@ -102,7 +102,7 @@ export function ProductClient({ initial }: { initial?: Product }) {
                     role="tab"
                     aria-selected={tab === k}
                     onClick={() => setTab(k)}
-                    className={cn("min-h-11 rounded-full text-[15px] font-semibold transition-all duration-300", tab === k ? "panel-night text-[#fdf7ee] shadow-[0_4px_12px_-6px_rgb(21_18_46/0.6)]" : "text-ink-soft hover:text-ink")}
+                    className={cn("min-h-11 rounded-full text-[15px] font-semibold transition-all duration-300", tab === k ? "panel-night text-ivory shadow-[0_4px_12px_-6px_rgb(21_18_46/0.6)]" : "text-ink-soft hover:text-ink")}
                   >
                     {k === "photos" ? tp("photos") : t("beforeAfter")}
                   </button>
@@ -173,7 +173,7 @@ export function ProductClient({ initial }: { initial?: Product }) {
             {/* seller shop card */}
             {s ? (
               <section className="card-lux mt-6 p-5" aria-label={t("soldBy")}>
-                <p className="text-[11px] font-bold tracking-[0.2em] text-gold-deep uppercase">{t("soldBy")}</p>
+                <p className="eyebrow">{t("soldBy")}</p>
                 <div className="mt-2 flex items-center gap-3">
                   <ShopLogo shop={s} size={52} />
                   <div className="min-w-0 flex-1">

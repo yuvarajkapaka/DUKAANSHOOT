@@ -1,6 +1,7 @@
 "use client";
 import * as Dialog from "@radix-ui/react-dialog";
 import { AnimatePresence, m as motion } from "framer-motion";
+import { DUR, EASE, scrim, spring } from "@/lib/motion";
 import { ArrowRight, ShoppingBag, Trash2, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
@@ -31,15 +32,14 @@ export function CartDrawer({ open, onOpenChange }: { open: boolean; onOpenChange
         {open ? (
           <Dialog.Portal forceMount>
             <Dialog.Overlay asChild forceMount>
-              <motion.div className="fixed inset-0 z-50 bg-night/40" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />
+              <motion.div className="fixed inset-0 z-50 bg-night/40" variants={scrim} initial="hidden" animate="show" exit="exit" />
             </Dialog.Overlay>
             <Dialog.Content asChild forceMount>
               <motion.aside
                 className="fixed inset-y-0 right-0 z-50 flex w-full max-w-md flex-col bg-cream shadow-2xl outline-none"
                 initial={{ x: "100%" }}
-                animate={{ x: 0 }}
-                exit={{ x: "100%" }}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                animate={{ x: 0, transition: spring.snappy }}
+                exit={{ x: "100%", transition: { duration: DUR.normal, ease: EASE.in } }}
               >
                 <div className="flex items-center justify-between border-b border-line px-5 py-4">
                   <Dialog.Title className="flex items-center gap-2 font-display text-xl">

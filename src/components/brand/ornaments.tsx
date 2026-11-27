@@ -1,3 +1,6 @@
+"use client";
+import { m } from "framer-motion";
+import { drawX, enter, inView, stagger } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 /**
@@ -90,9 +93,9 @@ export function TempleBorder({ className, flip }: { className?: string; flip?: b
 }
 
 /** A gold rule that fades out at both ends, with an optional diamond in the middle. */
-export function GoldRule({ className, diamond = true }: { className?: string; diamond?: boolean }) {
+export function GoldRule({ className, diamond = true, style }: { className?: string; diamond?: boolean; style?: React.CSSProperties }) {
   return (
-    <span aria-hidden className={cn("flex items-center gap-3", className)}>
+    <span aria-hidden className={cn("flex items-center gap-3", className)} style={style}>
       <span className="rule-gold flex-1" />
       {diamond ? <Zari className="size-3 shrink-0 text-gold" /> : null}
       <span className="rule-gold flex-1" />
@@ -117,24 +120,39 @@ export function SectionHead({
   id?: string;
   className?: string;
 }) {
+  // eyebrow → title → action arrive in turn, then the gold rule draws itself across
   return (
-    <div className={cn("mb-4", className)}>
+    <m.div {...inView} variants={stagger(0.07)} className={cn("mb-4", className)}>
       <div className="flex items-end justify-between gap-3">
         <div className="min-w-0">
           {eyebrow ? (
-            <p className="flex items-center gap-2 text-[11px] font-bold tracking-[0.18em] text-gold-deep uppercase">
+            <m.p variants={enter} className="eyebrow">
               <Zari className="size-2.5" />
               {eyebrow}
-            </p>
+            </m.p>
           ) : null}
-          <h2 id={id} className="font-display text-2xl leading-tight md:text-[1.75rem]">
+          <m.h2 variants={enter} id={id} className="font-display text-2xl leading-tight md:text-[1.75rem]">
             {title}
-          </h2>
+          </m.h2>
         </div>
-        {action ? <div className="shrink-0 pb-1">{action}</div> : null}
+        {action ? (
+          <m.div variants={enter} className="shrink-0 pb-1">
+            {action}
+          </m.div>
+        ) : null}
       </div>
-      <span aria-hidden className="rule-gold mt-2.5 block" />
-    </div>
+      <m.span aria-hidden variants={drawX} className="rule-gold mt-2.5 block origin-left" />
+    </m.div>
+  );
+}
+
+/** The small-caps label above a heading: gold, tracked out, led by a zari star. */
+export function Eyebrow({ children, className, tone = "gold" }: { children: React.ReactNode; className?: string; tone?: "gold" | "light" }) {
+  return (
+    <p className={cn("eyebrow", tone === "light" && "text-gold-light/90", className)}>
+      <Zari className="size-2.5" />
+      {children}
+    </p>
   );
 }
 

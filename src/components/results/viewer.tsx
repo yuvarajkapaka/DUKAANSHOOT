@@ -1,5 +1,6 @@
 "use client";
 import { AnimatePresence, m as motion, type PanInfo } from "framer-motion";
+import { DUR, EASE, scrim } from "@/lib/motion";
 import { ChevronLeft, ChevronRight, Download, RefreshCw, Trash2, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
@@ -61,9 +62,10 @@ export function Viewer({
           role="dialog"
           aria-modal="true"
           aria-label={t("photoN", { n: index! + 1, total: images.length })}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          variants={scrim}
+          initial="hidden"
+          animate="show"
+          exit="exit"
         >
           <div className="flex items-center justify-between px-3 pt-[max(8px,env(safe-area-inset-top))] text-white">
             <span className="pl-2 text-lg font-semibold">{t("photoN", { n: index! + 1, total: images.length })}</span>
@@ -84,10 +86,10 @@ export function Viewer({
                 dragSnapToOrigin
                 dragElastic={0.6}
                 onDragEnd={onDragEnd}
-                initial={{ opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.96 }}
-                transition={{ duration: 0.2 }}
+                initial={{ opacity: 0, scale: 0.97, filter: "blur(4px)" }}
+                animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                exit={{ opacity: 0, scale: 0.98 }}
+                transition={{ duration: DUR.fast, ease: EASE.out }}
                 draggable={false}
               />
             </AnimatePresence>

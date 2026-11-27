@@ -1,5 +1,6 @@
 "use client";
 import { m as motion } from "framer-motion";
+import { rise, spring } from "@/lib/motion";
 import { CheckCircle2, Circle, FileArchive, ImagePlus, ListChecks, Trash2, X } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
@@ -184,7 +185,7 @@ export default function GalleryPage() {
                     <img src={tile.url} alt={tg(tile.garmentType)} loading="lazy" decoding="async" className={cn("aspect-[4/5] w-full object-cover transition", on && "scale-90 rounded-lg")} />
                   );
                   return (
-                    <motion.div key={tile.key} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: Math.min(i, 12) * 0.02 }}>
+                    <motion.div key={tile.key} variants={rise} initial="hidden" animate="show" custom={Math.min(i, 12) * 0.025}>
                       {selecting ? (
                         <button
                           type="button"
@@ -215,7 +216,7 @@ export default function GalleryPage() {
 
       {selecting ? (
         <div className="fixed-bar z-30 px-4 pb-2 md:pb-4">
-          <motion.div initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="mx-auto max-w-3xl rounded-3xl bg-night p-3 text-white shadow-2xl">
+          <motion.div initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={spring.snappy} className="panel-night mx-auto max-w-3xl rounded-3xl p-3 text-white shadow-2xl">
             <p className="px-1 pb-2 font-semibold">{t("selected", { count: chosen.length })}</p>
             <div className="grid grid-cols-3 gap-2">
               <Button variant="whatsapp" size="sm" disabled={!chosen.length} loading={busy === "share"} onClick={share}>
