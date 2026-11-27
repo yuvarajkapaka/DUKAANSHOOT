@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { loadPacks } from "@/lib/packs";
-import { env, razorpayEnabled } from "@/lib/server/env";
+import { env, razorpayEnabled, testMoneyBlocked } from "@/lib/server/env";
 import { fetchOrder, parseSimulatedOrder, verifyCheckoutSignature } from "@/lib/server/razorpay";
 import { currentUser, supabaseAdmin } from "@/lib/supabase/server";
 
@@ -26,7 +26,7 @@ export async function POST(req: Request) {
 
   const simPack = parseSimulatedOrder(orderId);
   if (simPack) {
-    if (!env.demoMode) return NextResponse.json({ ok: false, error: "PAYMENTS_DISABLED" }, { status: 400 });
+    if (!env.demoMode || testMoneyBlocked(!!user, true)) return NextResponse.json({ ok: false, error: "PAYMENTS_DISABLED" }, { status: 400 });
     if (body?.simulateFailure) {
       if (user) await admin?.from("payments").update({ status: "failed" }).eq("razorpay_order_id", orderId).eq("user_id", user.id);
       return NextResponse.json({ ok: false, error: "FAILED" }, { status: 402 });
@@ -34,6 +34,7 @@ export async function POST(req: Request) {
     credits = loadPacks().find((p) => p.id === simPack)?.credits ?? 0;
   } else {
     if (!razorpayEnabled || !orderId || !paymentId || !signature) return NextResponse.json({ ok: false, error: "BAD_INPUT" }, { status: 400 });
+    if (testMoneyBlocked(!!user, env.razorpayKeyId.startsWith("rzp_test_"))) return NextResponse.json({ ok: false, error: "PAYMENTS_DISABLED" }, { status: 400 });
     if (!verifyCheckoutSignature(orderId, paymentId, signature)) return NextResponse.json({ ok: false, error: "BAD_SIGNATURE" }, { status: 400 });
     const order = await fetchOrder(orderId).catch(() => null);
     if (!order) return NextResponse.json({ ok: false, error: "RETRY" }, { status: 502 });

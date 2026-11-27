@@ -12,7 +12,7 @@ import { AuthFrame } from "@/components/brand/auth-frame";
 import { Button } from "@/components/ui/button";
 import { Sheet } from "@/components/ui/sheet";
 import type { Role } from "@/lib/market/types";
-import { cn } from "@/lib/utils";
+import { cn, safeNext } from "@/lib/utils";
 
 const getSupabase = async () => (await import("@/lib/supabase/browser")).supabaseBrowser();
 
@@ -40,7 +40,7 @@ function LoginInner() {
   const [emailOpen, setEmailOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
-  const next = params.get("next");
+  const next = safeNext(params.get("next"));
 
   const home = (r: Role | null) => (next && (r === "seller" || !next.startsWith("/seller")) ? next : r === "seller" ? "/seller" : "/market");
 

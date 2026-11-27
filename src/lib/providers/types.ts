@@ -1,3 +1,5 @@
+import { createHmac, timingSafeEqual } from "node:crypto";
+import { appSecret } from "../server/env";
 import type { GarmentType, LookOptions } from "../types";
 
 export interface TryOnInput {
@@ -41,11 +43,27 @@ export class ProviderError extends Error {
   }
 }
 
-/* Job tokens are self-describing so status polling works on stateless serverless functions. */
-export const encodeToken = (o: unknown) => Buffer.from(JSON.stringify(o)).toString("base64url");
+/*
+ * Job tokens are self-describing so status polling works on stateless serverless
+ * functions. They are signed with APP_SECRET, so a browser can't invent one: it can't
+ * point a poll at somebody else's AI job, or mint a demo job that is already "done".
+ */
+const tokenMac = (body: string) => createHmac("sha256", appSecret()).update(body).digest("base64url").slice(0, 22);
+
+export const encodeToken = (o: unknown) => {
+  const body = Buffer.from(JSON.stringify(o)).toString("base64url");
+  return `${body}.${tokenMac(body)}`;
+};
+
 export function decodeToken<T>(s: string): T | null {
+  const dot = s.lastIndexOf(".");
+  if (dot < 1) return null;
+  const body = s.slice(0, dot);
+  const given = Buffer.from(s.slice(dot + 1));
+  const expected = Buffer.from(tokenMac(body));
+  if (given.length !== expected.length || !timingSafeEqual(given, expected)) return null;
   try {
-    return JSON.parse(Buffer.from(s, "base64url").toString("utf8")) as T;
+    return JSON.parse(Buffer.from(body, "base64url").toString("utf8")) as T;
   } catch {
     return null;
   }

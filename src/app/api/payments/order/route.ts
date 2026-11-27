@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { loadPacks } from "@/lib/packs";
-import { env, razorpayEnabled } from "@/lib/server/env";
+import { env, razorpayEnabled, testMoneyBlocked } from "@/lib/server/env";
 import { createOrder, simulatedOrder } from "@/lib/server/razorpay";
 import { clientKey, rateLimit } from "@/lib/server/rate-limit";
 import { currentUser, supabaseAdmin } from "@/lib/supabase/server";
@@ -17,7 +17,7 @@ export async function POST(req: Request) {
   if (!pack) return NextResponse.json({ error: "BAD_INPUT" }, { status: 400 });
 
   if (!razorpayEnabled) {
-    if (!env.demoMode) return NextResponse.json({ error: "PAYMENTS_DISABLED" }, { status: 503 });
+    if (!env.demoMode || testMoneyBlocked(!!user, true)) return NextResponse.json({ error: "PAYMENTS_DISABLED" }, { status: 503 });
     const orderId = simulatedOrder(pack.id);
     if (user) {
       await supabaseAdmin()?.from("payments").insert({
@@ -31,6 +31,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ mode: "simulated", orderId, amount: pack.pricePaise, credits: pack.credits });
   }
 
+  if (testMoneyBlocked(!!user, env.razorpayKeyId.startsWith("rzp_test_"))) return NextResponse.json({ error: "PAYMENTS_DISABLED" }, { status: 503 });
   try {
     const order = await createOrder(pack.pricePaise, `ds_${Date.now()}`, { packId: pack.id, userId: user?.id ?? "demo" });
     if (user) {

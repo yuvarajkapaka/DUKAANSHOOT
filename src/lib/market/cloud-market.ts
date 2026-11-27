@@ -17,6 +17,18 @@ import type {
   Shop,
 } from "./types";
 
+/** keepalive: a WhatsApp click navigates away immediately, the count must still land */
+function track(productId: string, field: "views" | "wa") {
+  return fetch("/api/track", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ productId, field }),
+    keepalive: true,
+  })
+    .then(() => undefined)
+    .catch(() => undefined);
+}
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const toShop = (r: any): Shop => ({
   id: r.id,
@@ -130,11 +142,12 @@ export class CloudMarket implements MarketStore {
     if (!ids.length) return [];
     return must(await this.sb.from("products").select(PRODUCT_SELECT).in("id", ids)).map(toProduct);
   }
+  // counters go through /api/track, which de-duplicates per visitor (see migration 0003)
   async trackView(productId: string) {
-    await this.sb.rpc("track_product", { p_id: productId, p_field: "views" });
+    await track(productId, "views");
   }
   async trackWhatsApp(productId: string) {
-    await this.sb.rpc("track_product", { p_id: productId, p_field: "wa" });
+    await track(productId, "wa");
   }
 
   /* --------------------------------------------------------------- cart */

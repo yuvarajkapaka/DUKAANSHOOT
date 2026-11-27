@@ -92,4 +92,7 @@ for (const p of SEED_PRODUCTS) {
   must(await sb.from("product_images").insert(images.map((url, position) => ({ product_id: created.id, url, position }))), `images ${p.id}`);
   console.log("product", p.id);
 }
+// the shared demo accounts are read-only towards the public market (migration 0003)
+must(await sb.from("profiles").update({ is_demo: true }).in("id", [sellerId, buyerId]), "mark demo accounts (run supabase/migrations/0003_security.sql first)");
+
 console.log("\nDone. Set DEMO_SELLER_* and DEMO_BUYER_* in Vercel too, so the demo buttons sign into these accounts.");

@@ -55,7 +55,7 @@ export class CloudRepo implements Repo {
       language: data.language,
       credits: data.credits,
       defaults: data.defaults ?? {},
-      isDemo: false,
+      isDemo: !!data.is_demo,
       createdAt: data.created_at,
     };
   }

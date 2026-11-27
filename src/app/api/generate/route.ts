@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getProvider } from "@/lib/providers";
+import { getProvider, mockProvider } from "@/lib/providers";
 import { ProviderError } from "@/lib/providers/types";
 import { env } from "@/lib/server/env";
 import { clientKey, rateLimit } from "@/lib/server/rate-limit";
@@ -36,9 +36,15 @@ export async function POST(req: Request) {
   const sampleId = typeof body.sampleId === "string" && SAMPLE_GARMENTS.some((s) => s.id === body.sampleId) ? body.sampleId : undefined;
   const variants = Array.isArray(body.variants) ? body.variants.filter((v: unknown) => Number.isInteger(v)).slice(0, 4) : undefined;
 
+  // Paid AI only runs for signed-in cloud accounts, whose credits are charged in
+  // Postgres below. Device and anonymous accounts keep their credits in the browser,
+  // where anyone can edit them, so they always get the free demo provider.
+  const cloud = !!(user && sb);
+  const provider = cloud ? getProvider() : mockProvider;
+
   // The real AI needs the garment photo. Validate it server-side (type sniffing + 10 MB cap).
   let garmentImageUrl = "";
-  if (!sampleId && env.provider === "real") {
+  if (!sampleId && cloud && env.provider === "real") {
     const img = parseDataUrlImage(body.garmentImage);
     if (!img.ok) return err(img.error === "size" ? "TOO_BIG" : "NOT_IMAGE", 400);
     garmentImageUrl = body.garmentImage;
@@ -62,7 +68,7 @@ export async function POST(req: Request) {
   }
 
   try {
-    const { jobId } = await getProvider().generate({
+    const { jobId } = await provider.generate({
       garmentImageUrl,
       garmentType,
       model: { gender: look.gender, age: look.age, skin: look.skin, pose: look.pose },

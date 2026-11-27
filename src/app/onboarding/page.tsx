@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { addDeviceRole } from "@/lib/client/device-session";
 import type { Role } from "@/lib/market/types";
 import { SHOP_TYPES, type ShopType } from "@/lib/types";
-import { cn } from "@/lib/utils";
+import { cn, safeNext } from "@/lib/utils";
 
 const input = "min-h-14 rounded-2xl border-2 border-line bg-paper px-4 text-lg font-normal outline-none focus:border-accent";
 
@@ -31,7 +31,7 @@ function OnboardingInner() {
   const [whatsapp, setWhatsapp] = useState("");
   const [type, setType] = useState<ShopType>("sarees");
   const [busy, setBusy] = useState(false);
-  const next = params.get("next");
+  const next = safeNext(params.get("next"));
 
   useEffect(() => {
     if (status === "guest") router.replace("/login");

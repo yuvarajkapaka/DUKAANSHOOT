@@ -1,6 +1,6 @@
 import "server-only";
 import { createHmac, randomBytes, timingSafeEqual } from "node:crypto";
-import { env } from "./env";
+import { appSecret, env } from "./env";
 
 const API = "https://api.razorpay.com/v1";
 const auth = () => "Basic " + Buffer.from(`${env.razorpayKeyId}:${env.razorpaySecret}`).toString("base64");
@@ -51,11 +51,11 @@ export function verifyWebhookSignature(rawBody: string, signature: string) {
 export function simulatedOrder(packId: string) {
   const nonce = randomBytes(6).toString("hex");
   const base = `sim_${packId}_${nonce}`;
-  return `${base}_${hmacHex(env.appSecret, base).slice(0, 16)}`;
+  return `${base}_${hmacHex(appSecret(), base).slice(0, 16)}`;
 }
 
 export function parseSimulatedOrder(orderId: string): string | null {
   const m = /^(sim_([a-z0-9]+)_[a-f0-9]{12})_([a-f0-9]{16})$/.exec(orderId);
   if (!m) return null;
-  return safeEqualHex(hmacHex(env.appSecret, m[1]).slice(0, 16), m[3]) ? m[2] : null;
+  return safeEqualHex(hmacHex(appSecret(), m[1]).slice(0, 16), m[3]) ? m[2] : null;
 }

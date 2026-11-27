@@ -53,5 +53,10 @@
     "safari >= 15.4",
     "firefox >= 110",
     "samsung >= 20"
-  ]
+  ],
+  "overrides": {
+    "next": {
+      "postcss": "8.5.33"
+    }
+  }
 }

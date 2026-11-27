@@ -101,7 +101,7 @@ Every variable is documented in [`.env.example`](.env.example). Summary:
 
 | Variable | Needed for | Default |
 |---|---|---|
-| `DEMO_MODE` | test-only payments, Demo badges, automatic fallback to demo photos | `true` |
+| `DEMO_MODE` | test-only payments, Demo badges, automatic fallback to demo photos | on without Supabase, off with it |
 | `APP_SECRET` | signing simulated payment orders | dev value (change it) |
 | `TRYON_PROVIDER`, `FASHN_API_KEY` | real AI photos (`TRYON_PROVIDER=real`) | mock |
 | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY` | Google / email login, cloud storage, server-side credits | off |
